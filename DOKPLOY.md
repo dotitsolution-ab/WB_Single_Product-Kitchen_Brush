@@ -42,6 +42,7 @@ APP_NAME=Kitchen Brush
 APP_BASE_URL=https://yourdomain.com
 APP_TIMEZONE=Asia/Dhaka
 APP_DEBUG=false
+APP_INSTALL_DISABLED=false
 
 DB_HOST=your-dokploy-mysql-internal-host
 DB_PORT=3306
@@ -81,4 +82,10 @@ Create the first admin user, then open:
 https://yourdomain.com/admin/login.php
 ```
 
-For security, remove or block `install.php` after the first setup before running ads.
+After the first setup, change this environment variable and redeploy:
+
+```env
+APP_INSTALL_DISABLED=true
+```
+
+This blocks `install.php` before running ads.

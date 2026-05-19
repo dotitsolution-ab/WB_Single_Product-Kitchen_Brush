@@ -9,6 +9,12 @@ $success = null;
 $hasEnvConfig = getenv('DB_HOST') !== false && getenv('DB_DATABASE') !== false;
 $configExists = file_exists(BASE_PATH . '/config.php') || $hasEnvConfig;
 $alreadyInstalled = false;
+$installDisabled = filter_var((string)(getenv('APP_INSTALL_DISABLED') ?: ''), FILTER_VALIDATE_BOOLEAN);
+
+if ($installDisabled) {
+    http_response_code(404);
+    exit('Not found');
+}
 
 if ($configExists) {
     try {
