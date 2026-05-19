@@ -6,7 +6,8 @@ require_once __DIR__ . '/bootstrap.php';
 
 $error = null;
 $success = null;
-$configExists = file_exists(BASE_PATH . '/config.php');
+$hasEnvConfig = getenv('DB_HOST') !== false && getenv('DB_DATABASE') !== false;
+$configExists = file_exists(BASE_PATH . '/config.php') || $hasEnvConfig;
 $alreadyInstalled = false;
 
 if ($configExists) {
@@ -31,7 +32,7 @@ if (is_post()) {
             throw new RuntimeException('This store is already installed. Delete or rename install.php.');
         }
         if (!$configExists) {
-            throw new RuntimeException('Create config.php from config.sample.php before installation.');
+            throw new RuntimeException('Create config.php from config.sample.php or set Dokploy database environment variables before installation.');
         }
         if ($name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($password) < 8) {
             throw new InvalidArgumentException('Enter a valid name, email, and at least 8 character password.');
@@ -89,7 +90,7 @@ if (is_post()) {
             <div class="alert alert-error">This store is already installed. Delete or rename install.php for security.</div>
         <?php endif; ?>
         <?php if (!$configExists): ?>
-            <div class="alert alert-error">Copy config.sample.php to config.php and set your database credentials first.</div>
+            <div class="alert alert-error">Copy config.sample.php to config.php or set Dokploy database environment variables first.</div>
         <?php endif; ?>
         <?php if ($error): ?>
             <div class="alert alert-error"><?= e($error) ?></div>

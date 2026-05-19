@@ -1,0 +1,7 @@
+.git
+config.php
+storage/logs
+.DS_Store
+Thumbs.db
+.ftpquota
+kitchen-brush.polapains.com
