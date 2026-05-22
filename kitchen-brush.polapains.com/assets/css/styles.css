@@ -2440,17 +2440,19 @@ select:focus {
 
 @media (max-width: 640px) {
     body.landing-body .sticky-order-cta {
-        left: 0 !important;
-        right: 0 !important;
-        bottom: 0 !important;
-        width: 100% !important;
+        left: 16px !important;
+        right: 16px !important;
+        bottom: 12px !important;
+        width: auto !important;
         min-width: 0 !important;
         max-width: none !important;
-        min-height: 58px !important;
+        min-height: 54px !important;
+        display: grid !important;
+        place-items: center !important;
+        justify-content: stretch !important;
         margin: 0 !important;
-        padding-right: 18px !important;
-        padding-left: 18px !important;
-        border-radius: 0 !important;
+        padding: 0 18px !important;
+        border-radius: 999px !important;
         transform: none !important;
     }
 
@@ -2459,8 +2461,14 @@ select:focus {
     }
 
     body.landing-body .sticky-order-cta span {
+        display: block !important;
         width: 100%;
         text-align: center !important;
+        line-height: 1.15 !important;
+    }
+
+    body.landing-body .sticky-order-cta strong {
+        display: none !important;
     }
 
     body.landing-body .whatsapp-float {
@@ -2468,7 +2476,7 @@ select:focus {
         height: 48px !important;
         right: auto !important;
         left: 14px !important;
-        bottom: 72px !important;
+        bottom: 78px !important;
         z-index: 70;
     }
 
