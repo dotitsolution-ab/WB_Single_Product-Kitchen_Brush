@@ -37,12 +37,16 @@ return [
         'debug' => $envBool('APP_DEBUG', false),
     ],
     'database' => [
+        'url' => $env('DATABASE_URL', $env('DB_URL')),
+        'driver' => $env('DB_DRIVER', 'pgsql'),
         'host' => $env('DB_HOST', 'localhost'),
-        'port' => $envInt('DB_PORT', 3306),
+        'port' => $envInt('DB_PORT', 5432),
         'name' => $env('DB_DATABASE', 'your_database_name'),
         'user' => $env('DB_USERNAME', 'your_database_user'),
         'pass' => $env('DB_PASSWORD', 'your_database_password'),
-        'charset' => $env('DB_CHARSET', 'utf8mb4'),
+        'charset' => $env('DB_CHARSET', 'utf8'),
+        'sslmode' => $env('DB_SSLMODE', 'prefer'),
+        'connect_timeout' => $envInt('DB_CONNECT_TIMEOUT', 10),
     ],
     'steadfast' => [
         'base_url' => $env('STEADFAST_BASE_URL', 'https://portal.steadfast.com.bd/api/v1'),

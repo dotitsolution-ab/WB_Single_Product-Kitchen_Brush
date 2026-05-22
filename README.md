@@ -1,23 +1,23 @@
 # Single Product Ecommerce
 
-Core PHP + MySQL ecommerce for cPanel/shared hosting. It includes a fast landing page, COD checkout, thank-you page, customer order lookup, admin order management, printable invoices, settings for tracking pixels, and Steadfast shipment creation.
+Core PHP + PostgreSQL ecommerce app for Docker/Dokploy hosting. It includes a fast landing page, COD checkout, thank-you page, customer order lookup, admin order management, printable invoices, settings for tracking pixels, and Steadfast shipment creation.
 
 ## Requirements
 
 - PHP 8.2+
-- MySQL 5.7+ or MariaDB 10.4+
-- PHP extensions: PDO MySQL, cURL, JSON, mbstring
-- Apache/cPanel hosting with `.htaccess` support
+- PostgreSQL 13+
+- PHP extensions: PDO PostgreSQL, cURL, JSON, mbstring
+- Apache with `.htaccess` support, or Docker/Dokploy using the included `Dockerfile`
 
 ## Setup
 
-1. Copy `config.sample.php` to `config.php`.
-2. Update database credentials in `config.php`.
+1. Copy `config.sample.php` to `config.php`, or set environment variables in Dokploy.
+2. Update PostgreSQL credentials.
 3. Open `/install.php` in the browser and create the first admin user.
 4. Delete or rename `install.php` after setup.
 5. Log in at `/admin/login.php`.
 
-For production upload steps, follow `DEPLOYMENT.md`.
+For Dokploy production steps, follow `DOKPLOY.md`.
 
 ## Admin
 

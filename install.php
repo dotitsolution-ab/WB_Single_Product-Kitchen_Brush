@@ -6,7 +6,9 @@ require_once __DIR__ . '/bootstrap.php';
 
 $error = null;
 $success = null;
-$hasEnvConfig = getenv('DB_HOST') !== false && getenv('DB_DATABASE') !== false;
+$hasEnvConfig = (getenv('DB_HOST') !== false && getenv('DB_DATABASE') !== false)
+    || getenv('DATABASE_URL') !== false
+    || getenv('DB_URL') !== false;
 $configExists = file_exists(BASE_PATH . '/config.php') || $hasEnvConfig;
 $alreadyInstalled = false;
 $installDisabled = filter_var((string)(getenv('APP_INSTALL_DISABLED') ?: ''), FILTER_VALIDATE_BOOLEAN);
@@ -18,8 +20,7 @@ if ($installDisabled) {
 
 if ($configExists) {
     try {
-        $table = db()->query("SHOW TABLES LIKE 'admin_users'")->fetchColumn();
-        if ($table) {
+        if (db_table_exists('admin_users')) {
             $alreadyInstalled = (int)db()->query('SELECT COUNT(*) FROM admin_users')->fetchColumn() > 0;
         }
     } catch (Throwable) {
@@ -38,7 +39,7 @@ if (is_post()) {
             throw new RuntimeException('This store is already installed. Delete or rename install.php.');
         }
         if (!$configExists) {
-            throw new RuntimeException('Create config.php from config.sample.php or set Dokploy database environment variables before installation.');
+            throw new RuntimeException('Create config.php from config.sample.php or set Dokploy PostgreSQL environment variables before installation.');
         }
         if ($name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($password) < 8) {
             throw new InvalidArgumentException('Enter a valid name, email, and at least 8 character password.');
@@ -96,7 +97,7 @@ if (is_post()) {
             <div class="alert alert-error">This store is already installed. Delete or rename install.php for security.</div>
         <?php endif; ?>
         <?php if (!$configExists): ?>
-            <div class="alert alert-error">Copy config.sample.php to config.php or set Dokploy database environment variables first.</div>
+            <div class="alert alert-error">Copy config.sample.php to config.php or set Dokploy PostgreSQL environment variables first.</div>
         <?php endif; ?>
         <?php if ($error): ?>
             <div class="alert alert-error"><?= e($error) ?></div>

@@ -1,12 +1,14 @@
-# cPanel Deployment Runbook
+# Deployment Runbook
 
 ## 1. Create Database
 
-In cPanel, create:
+Create a PostgreSQL database with your hosting provider:
 
-- MySQL database
-- MySQL user
-- Assign the user to the database with all privileges
+- PostgreSQL database
+- PostgreSQL user
+- Password
+- Host and port, usually `5432`
+- SSL mode if required by the provider
 
 Keep these values ready for `config.php`.
 
@@ -25,10 +27,13 @@ Create `config.php` from `config.sample.php` and update:
     'base_url' => 'https://yourdomain.com',
 ],
 'database' => [
-    'host' => 'localhost',
-    'name' => 'cpanel_db_name',
-    'user' => 'cpanel_db_user',
-    'pass' => 'cpanel_db_password',
+    'driver' => 'pgsql',
+    'host' => 'your-postgres-host',
+    'port' => 5432,
+    'name' => 'postgres_db_name',
+    'user' => 'postgres_db_user',
+    'pass' => 'postgres_db_password',
+    'sslmode' => 'require',
 ],
 ```
 
@@ -77,7 +82,7 @@ Then configure:
 
 Ask hosting support to enable these if unavailable:
 
-- PDO MySQL
+- PDO PostgreSQL
 - cURL
 - JSON
 - mbstring
@@ -108,24 +113,22 @@ Before running ads:
 Recommended repeat workflow:
 
 ```text
-Local project -> GitHub private repo -> cPanel Git pull/deploy -> live website
+Local project -> GitHub private repo -> Dokploy deploy -> live website
 ```
 
 ### First-Time Git Setup
 
 1. Create a private GitHub repository.
 2. Push this project to that repository.
-3. In cPanel, open **Git Version Control**.
-4. Clone the GitHub repository.
-5. Set the repository deployment path to the website folder, usually `public_html/`.
-6. Keep the live `config.php` only on the server. It should not be committed.
+3. In Dokploy, create an Application from the GitHub repository.
+4. Set the build type to Dockerfile and the exposed port to `80`.
+5. Keep production credentials in Dokploy environment variables. They should not be committed.
 
-This project includes `.cpanel.yml`, which tells cPanel how to deploy files. It excludes:
+This project includes `.dockerignore`, which keeps local-only files out of the Docker image. It excludes:
 
 - `.git`
 - `config.php`
-- `install.php`
-- README/deployment docs
+- local upload/log folders
 
 ### Normal Update Flow
 
@@ -138,13 +141,11 @@ git commit -m "Update ecommerce site"
 git push
 ```
 
-Then in cPanel:
+Then in Dokploy:
 
-1. Open **Git Version Control**.
-2. Open the repository.
-3. Click **Pull or Deploy**.
-4. Run **Update from Remote**.
-5. Run **Deploy HEAD Commit**.
+1. Open the application.
+2. Trigger a redeploy from the latest GitHub commit.
+3. Check the build logs.
 
 ### Quick Live Check
 
@@ -163,17 +164,17 @@ After every deploy:
 After pulling the security hardening update:
 
 - Open admin login once. The app will create security tables automatically if the database user has `CREATE` permission.
-- If auto-create is disabled by hosting permissions, import `database/security_migration.sql` from phpMyAdmin.
+- If auto-create is disabled by hosting permissions, import `database/security_migration.sql` with your PostgreSQL admin tool.
 - Confirm `/install.php` is deleted or renamed on the live server.
 - Confirm `config.php` exists only on the server and is not committed to Git.
-- In cPanel, keep PHP `display_errors` off for production.
+- Keep `APP_DEBUG=false` for production.
 
 ### Product Images
 
 Upload product images to:
 
 ```text
-public_html/assets/images/
+/var/www/html/assets/images/
 ```
 
 Suggested filenames:
@@ -187,19 +188,19 @@ kitchen-brush-plate-demo.jpg
 kitchen-brush-pan-close.jpg
 ```
 
-These image files are now committed with the project, so cPanel Git deploy will publish them with the rest of the site.
+These image files are committed with the project, so Dokploy will publish them with the rest of the site.
 
 Images uploaded from Admin -> Media Library are saved in:
 
 ```text
-public_html/assets/images/uploads/
+/var/www/html/assets/images/uploads/
 ```
 
-That upload folder is excluded from Git deploy deletion, so uploaded media will stay on the live server.
+For persistent uploaded media, mount a Dokploy volume to `/var/www/html/assets/images/uploads`.
 
 ### Emergency Manual Update
 
-If Git is not available in cPanel, upload changed files with File Manager or FTP/SFTP.
+If Git deployment is not available, rebuild the Docker image from the updated project files.
 
 Do not overwrite live `config.php`.
 

@@ -23,50 +23,53 @@ function ensure_email_schema(): void
     }
 
     if (!db_column_exists('customers', 'email')) {
-        $pdo->exec('ALTER TABLE customers ADD email VARCHAR(190) NULL AFTER phone');
+        $pdo->exec('ALTER TABLE customers ADD COLUMN email VARCHAR(190) NULL');
     }
     if (!db_column_exists('orders', 'customer_email')) {
-        $pdo->exec('ALTER TABLE orders ADD customer_email VARCHAR(190) NULL AFTER customer_phone');
+        $pdo->exec('ALTER TABLE orders ADD COLUMN customer_email VARCHAR(190) NULL');
     }
 
     $pdo->exec(
         "CREATE TABLE IF NOT EXISTS email_logs (
-            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            order_id INT UNSIGNED NULL,
+            id SERIAL PRIMARY KEY,
+            order_id INTEGER NULL,
             email_type VARCHAR(60) NOT NULL,
             recipient_email VARCHAR(190) NOT NULL,
             subject VARCHAR(255) NOT NULL,
             status VARCHAR(30) NOT NULL DEFAULT 'sent',
             provider_message_id VARCHAR(120) NULL,
             error_message TEXT NULL,
-            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            INDEX idx_email_logs_order_type (order_id, email_type),
-            INDEX idx_email_logs_status (status)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )"
     );
+    $pdo->exec('CREATE INDEX IF NOT EXISTS idx_email_logs_order_type ON email_logs (order_id, email_type)');
+    $pdo->exec('CREATE INDEX IF NOT EXISTS idx_email_logs_status ON email_logs (status)');
 
     $pdo->exec(
         "CREATE TABLE IF NOT EXISTS sms_logs (
-            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            order_id INT UNSIGNED NULL,
+            id SERIAL PRIMARY KEY,
+            order_id INTEGER NULL,
             sms_type VARCHAR(60) NOT NULL,
             recipient_phone VARCHAR(20) NOT NULL,
             message_text TEXT NOT NULL,
             status VARCHAR(30) NOT NULL DEFAULT 'sent',
             provider_response TEXT NULL,
             error_message TEXT NULL,
-            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            INDEX idx_sms_logs_order_type (order_id, sms_type),
-            INDEX idx_sms_logs_status (status)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )"
     );
+    $pdo->exec('CREATE INDEX IF NOT EXISTS idx_sms_logs_order_type ON sms_logs (order_id, sms_type)');
+    $pdo->exec('CREATE INDEX IF NOT EXISTS idx_sms_logs_status ON sms_logs (status)');
 
     $checked = true;
 }
 
 function db_table_exists(string $table): bool
 {
-    $stmt = db()->prepare('SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = :table_name');
+    $stmt = db()->prepare(
+        'SELECT COUNT(*) FROM information_schema.tables
+         WHERE table_schema = current_schema() AND table_name = :table_name'
+    );
     $stmt->execute(['table_name' => $table]);
     return (int)$stmt->fetchColumn() > 0;
 }
@@ -74,8 +77,8 @@ function db_table_exists(string $table): bool
 function db_column_exists(string $table, string $column): bool
 {
     $stmt = db()->prepare(
-        'SELECT COUNT(*) FROM information_schema.COLUMNS
-         WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = :table_name AND COLUMN_NAME = :column_name'
+        'SELECT COUNT(*) FROM information_schema.columns
+         WHERE table_schema = current_schema() AND table_name = :table_name AND column_name = :column_name'
     );
     $stmt->execute([
         'table_name' => $table,
@@ -98,17 +101,17 @@ function ensure_analytics_schema(): void
 
     db()->exec(
         "CREATE TABLE IF NOT EXISTS page_visits (
-            id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            id BIGSERIAL PRIMARY KEY,
             page_key VARCHAR(40) NOT NULL,
             visitor_hash CHAR(64) NOT NULL,
             session_id VARCHAR(128) NULL,
             ip_address VARCHAR(45) NULL,
             user_agent VARCHAR(500) NULL,
-            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            INDEX idx_page_visits_page_created (page_key, created_at),
-            INDEX idx_page_visits_visitor (page_key, visitor_hash)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )"
     );
+    db()->exec('CREATE INDEX IF NOT EXISTS idx_page_visits_page_created ON page_visits (page_key, created_at)');
+    db()->exec('CREATE INDEX IF NOT EXISTS idx_page_visits_visitor ON page_visits (page_key, visitor_hash)');
 
     $checked = true;
 }
@@ -166,8 +169,8 @@ function analytics_stats(): array
                 page_key,
                 COUNT(*) AS total_views,
                 COUNT(DISTINCT visitor_hash) AS unique_visitors,
-                SUM(CASE WHEN DATE(created_at) = CURDATE() THEN 1 ELSE 0 END) AS views_today,
-                COUNT(DISTINCT CASE WHEN DATE(created_at) = CURDATE() THEN visitor_hash END) AS visitors_today
+                SUM(CASE WHEN DATE(created_at) = CURRENT_DATE THEN 1 ELSE 0 END) AS views_today,
+                COUNT(DISTINCT CASE WHEN DATE(created_at) = CURRENT_DATE THEN visitor_hash END) AS visitors_today
              FROM page_visits
              WHERE page_key IN ('home', 'thank_you')
              GROUP BY page_key"
@@ -470,7 +473,8 @@ function create_cod_order(array $data): array
             'INSERT INTO orders
             (order_number, customer_id, customer_name, customer_phone, customer_email, customer_address, district_area, delivery_note, subtotal, delivery_charge, total, payment_method, status)
             VALUES
-            (:order_number, :customer_id, :customer_name, :customer_phone, :customer_email, :customer_address, :district_area, :delivery_note, :subtotal, :delivery_charge, :total, :payment_method, :status)'
+            (:order_number, :customer_id, :customer_name, :customer_phone, :customer_email, :customer_address, :district_area, :delivery_note, :subtotal, :delivery_charge, :total, :payment_method, :status)
+            RETURNING id'
         );
         $stmt->execute([
             'order_number' => $orderNumber,
@@ -488,7 +492,7 @@ function create_cod_order(array $data): array
             'status' => 'Pending',
         ]);
 
-        $orderId = (int)$pdo->lastInsertId();
+        $orderId = (int)$stmt->fetchColumn();
         $item = $pdo->prepare(
             'INSERT INTO order_items (order_id, product_id, product_name, unit_price, quantity, line_total)
              VALUES (:order_id, :product_id, :product_name, :unit_price, :quantity, :line_total)'
@@ -538,7 +542,7 @@ function upsert_customer(string $name, string $phone, string $email, string $add
 
     if ($customer) {
         $update = db()->prepare(
-            'UPDATE customers SET name = :name, email = :email, address = :address, district_area = :district_area, updated_at = NOW() WHERE id = :id'
+            'UPDATE customers SET name = :name, email = :email, address = :address, district_area = :district_area, updated_at = CURRENT_TIMESTAMP WHERE id = :id'
         );
         $update->execute([
             'name' => $name,
@@ -551,7 +555,9 @@ function upsert_customer(string $name, string $phone, string $email, string $add
     }
 
     $insert = db()->prepare(
-        'INSERT INTO customers (name, phone, email, address, district_area) VALUES (:name, :phone, :email, :address, :district_area)'
+        'INSERT INTO customers (name, phone, email, address, district_area)
+         VALUES (:name, :phone, :email, :address, :district_area)
+         RETURNING id'
     );
     $insert->execute([
         'name' => $name,
@@ -561,7 +567,7 @@ function upsert_customer(string $name, string $phone, string $email, string $add
         'district_area' => $districtArea,
     ]);
 
-    return (int)db()->lastInsertId();
+    return (int)$insert->fetchColumn();
 }
 
 function unique_order_number(): string
@@ -1043,7 +1049,7 @@ function dashboard_stats(): array
     $row = db()->query(
         "SELECT
             COUNT(*) AS orders_total,
-            COALESCE(SUM(CASE WHEN DATE(created_at) = CURDATE() THEN 1 ELSE 0 END), 0) AS orders_today,
+            COALESCE(SUM(CASE WHEN DATE(created_at) = CURRENT_DATE THEN 1 ELSE 0 END), 0) AS orders_today,
             COALESCE(SUM(total), 0) AS sales_total,
             COALESCE(SUM(CASE WHEN status = 'Pending' THEN 1 ELSE 0 END), 0) AS pending
          FROM orders"
@@ -1062,7 +1068,7 @@ function update_order_status(int $orderId, string $status): void
         throw new InvalidArgumentException('Invalid status.');
     }
 
-    $stmt = db()->prepare('UPDATE orders SET status = :status, updated_at = NOW() WHERE id = :id');
+    $stmt = db()->prepare('UPDATE orders SET status = :status, updated_at = CURRENT_TIMESTAMP WHERE id = :id');
     $stmt->execute([
         'status' => $status,
         'id' => $orderId,
@@ -1075,13 +1081,13 @@ function save_manual_shipment(int $orderId, array $data): void
         'INSERT INTO courier_shipments
         (order_id, courier_name, consignment_id, tracking_code, shipment_status, raw_response)
         VALUES (:order_id, :courier_name, :consignment_id, :tracking_code, :shipment_status, :raw_response)
-        ON DUPLICATE KEY UPDATE
-            courier_name = VALUES(courier_name),
-            consignment_id = VALUES(consignment_id),
-            tracking_code = VALUES(tracking_code),
-            shipment_status = VALUES(shipment_status),
-            raw_response = VALUES(raw_response),
-            updated_at = NOW()'
+        ON CONFLICT (order_id) DO UPDATE SET
+            courier_name = EXCLUDED.courier_name,
+            consignment_id = EXCLUDED.consignment_id,
+            tracking_code = EXCLUDED.tracking_code,
+            shipment_status = EXCLUDED.shipment_status,
+            raw_response = EXCLUDED.raw_response,
+            updated_at = CURRENT_TIMESTAMP'
     );
     $stmt->execute([
         'order_id' => $orderId,
@@ -1143,7 +1149,7 @@ function save_product(array $data): void
             delivery_charge = :delivery_charge,
             stock = :stock,
             image_url = :image_url,
-            updated_at = NOW()
+            updated_at = CURRENT_TIMESTAMP
          WHERE id = :id'
     );
     $stmt->execute([

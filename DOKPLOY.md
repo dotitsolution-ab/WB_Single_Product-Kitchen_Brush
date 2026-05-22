@@ -1,18 +1,19 @@
 # Dokploy Deployment
 
-This project is a PHP 8.2 + MySQL app. Deploy it in Dokploy with the Dockerfile build type and a managed MySQL database.
+This project is a PHP 8.2 + PostgreSQL app. Deploy it in Dokploy with the Dockerfile build type and point it to your external PostgreSQL database.
 
-## 1. Create MySQL
+## 1. Prepare External PostgreSQL
 
-1. In Dokploy, create a MySQL database service.
-2. Keep the internal database credentials ready:
-   - Host
-   - Port
-   - Database name
-   - Username
-   - Password
+Create the database with your PostgreSQL provider, then keep these values ready:
 
-Use the internal host/credentials from Dokploy for the app environment variables.
+- Host
+- Port, usually `5432`
+- Database name
+- Username
+- Password
+- SSL mode, often `require` for managed external databases
+
+If your database provider has a firewall or trusted sources list, allow your Dokploy server IP before deploying.
 
 ## 2. Create Application
 
@@ -32,6 +33,11 @@ main
 
 5. Set Build Type to Dockerfile.
 6. Use port `80`.
+7. If you will upload images from the Admin Media Library, mount a persistent volume to:
+
+```text
+/var/www/html/assets/images/uploads
+```
 
 ## 3. Environment Variables
 
@@ -44,12 +50,15 @@ APP_TIMEZONE=Asia/Dhaka
 APP_DEBUG=false
 APP_INSTALL_DISABLED=false
 
-DB_HOST=your-dokploy-mysql-internal-host
-DB_PORT=3306
+DB_DRIVER=pgsql
+DB_HOST=your-external-postgres-host
+DB_PORT=5432
 DB_DATABASE=your_database_name
 DB_USERNAME=your_database_user
 DB_PASSWORD=your_database_password
-DB_CHARSET=utf8mb4
+DB_CHARSET=utf8
+DB_SSLMODE=require
+DB_CONNECT_TIMEOUT=10
 
 SESSION_NAME=sp_store_session
 ADMIN_IDLE_TIMEOUT_MINUTES=60
@@ -59,6 +68,12 @@ LOGIN_DECAY_MINUTES=15
 STEADFAST_BASE_URL=https://portal.steadfast.com.bd/api/v1
 STEADFAST_API_KEY=
 STEADFAST_SECRET_KEY=
+```
+
+If your provider gives a single connection string, you can use this instead of the individual `DB_*` host/user/password variables:
+
+```env
+DATABASE_URL=postgresql://user:password@host:5432/database?sslmode=require
 ```
 
 ## 4. Domain
