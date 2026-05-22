@@ -2432,12 +2432,13 @@ select:focus {
 
 @media (max-width: 640px) {
     body.landing-body .sticky-order-cta {
-        left: 0 !important;
-        right: 0 !important;
-        width: calc(100% - 24px) !important;
-        max-width: 360px !important;
-        margin-right: auto !important;
-        margin-left: auto !important;
+        left: 14px !important;
+        right: 14px !important;
+        bottom: 10px !important;
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        margin: 0 !important;
         padding-right: 14px !important;
         padding-left: 14px !important;
         transform: none !important;
@@ -2445,5 +2446,12 @@ select:focus {
 
     body.landing-body .sticky-order-cta.is-hidden {
         transform: translateY(12px) !important;
+    }
+
+    body.landing-body .whatsapp-float {
+        right: auto !important;
+        left: 14px !important;
+        bottom: 76px !important;
+        z-index: 70;
     }
 }

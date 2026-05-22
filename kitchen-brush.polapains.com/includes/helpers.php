@@ -335,7 +335,8 @@ function render_order_success_tracking(array $order): void
 
 function whatsapp_url(): string
 {
-    $phone = normalize_phone(setting('whatsapp_number', setting('contact_phone')));
+    $whatsappNumber = trim(setting('whatsapp_number'));
+    $phone = normalize_phone($whatsappNumber !== '' ? $whatsappNumber : setting('contact_phone'));
     if (!valid_bd_phone($phone)) {
         return '';
     }
