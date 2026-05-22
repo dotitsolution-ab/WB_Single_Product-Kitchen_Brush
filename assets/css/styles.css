@@ -1230,7 +1230,7 @@ select:focus {
 
 .landing-body {
     padding-bottom: 88px;
-    background: #f8f1e8;
+    background: #eef6f3;
 }
 
 .landing-body main {
@@ -1238,22 +1238,24 @@ select:focus {
 }
 
 .funnel {
-    width: min(1180px, 100%);
+    width: min(1220px, 100%);
     margin-inline: auto;
     background: #fff;
-    box-shadow: 0 20px 64px rgba(30, 24, 18, 0.1);
+    box-shadow: 0 22px 70px rgba(16, 42, 36, 0.1);
 }
 
 .funnel-hero {
     position: relative;
     overflow: hidden;
-    min-height: 560px;
+    min-height: 610px;
     display: grid;
     grid-template-columns: minmax(360px, 0.92fr) minmax(440px, 1.08fr);
     gap: 40px;
     align-items: center;
-    padding: 28px 42px 28px;
-    background: linear-gradient(112deg, #fffaf3 0%, #fff 54%, #f6efe4 100%);
+    padding: 38px 46px 34px;
+    background:
+        linear-gradient(112deg, rgba(239, 250, 246, 0.96) 0%, rgba(255, 255, 255, 0.94) 50%, rgba(255, 247, 237, 0.96) 100%),
+        linear-gradient(145deg, #0f766e 0%, #f59e0b 100%);
 }
 
 .funnel-hero::before,
@@ -1297,6 +1299,26 @@ select:focus {
     font-size: clamp(19px, 2vw, 24px);
     font-weight: 800;
     line-height: 1.25;
+}
+
+.hero-benefits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 4px 0 16px;
+}
+
+.hero-benefits span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    border: 1px solid rgba(13, 148, 136, 0.24);
+    border-radius: 999px;
+    padding: 0 12px;
+    color: #0f766e;
+    background: rgba(255, 255, 255, 0.88);
+    font-size: 14px;
+    font-weight: 900;
 }
 
 .offer-card {
@@ -1450,15 +1472,38 @@ select:focus {
     border-radius: 24px;
     object-fit: cover;
     object-position: center;
-    box-shadow: 0 22px 56px rgba(54, 44, 34, 0.18);
+    box-shadow: 0 22px 56px rgba(16, 42, 36, 0.2);
 }
 
-.hero-demo-img {
-    display: none;
+.hero-demo-card {
+    position: absolute;
+    left: -24px;
+    bottom: 28px;
+    width: min(230px, 38%);
+    overflow: hidden;
+    border: 6px solid #fff;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 18px 40px rgba(17, 24, 39, 0.18);
+}
+
+.hero-demo-card img {
+    width: 100%;
+    height: 130px;
+    object-fit: cover;
+}
+
+.hero-demo-card span {
+    display: block;
+    padding: 9px 11px 10px;
+    color: #111827;
+    font-size: 14px;
+    font-weight: 900;
+    line-height: 1.25;
 }
 
 .funnel-section {
-    padding: 26px 42px 8px;
+    padding: 34px 46px 10px;
 }
 
 .funnel-section h2,
@@ -1482,9 +1527,102 @@ select:focus {
     background: #fb7404;
 }
 
+.trust-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1px;
+    background: #0f766e;
+}
+
+.trust-strip div {
+    display: grid;
+    gap: 3px;
+    min-height: 94px;
+    align-content: center;
+    padding: 14px 20px;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.06);
+    text-align: center;
+}
+
+.trust-strip strong {
+    font-size: clamp(26px, 3vw, 34px);
+    line-height: 1;
+}
+
+.trust-strip span {
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.cleaning-story {
+    display: grid;
+    grid-template-columns: minmax(0, 0.88fr) minmax(360px, 1.12fr);
+    gap: 28px;
+    align-items: center;
+    padding-top: 44px;
+}
+
+.section-kicker {
+    display: inline-flex;
+    align-items: center;
+    width: max-content;
+    min-height: 34px;
+    border-radius: 999px;
+    padding: 0 13px;
+    color: #0f766e;
+    background: #def7ec;
+    font-size: 13px;
+    font-weight: 900;
+}
+
+.cleaning-story h2 {
+    justify-content: flex-start;
+    margin: 12px 0 12px;
+    text-align: left;
+}
+
+.cleaning-story h2::before,
+.cleaning-story h2::after {
+    display: none;
+}
+
+.story-copy p {
+    max-width: 520px;
+    margin: 0;
+    color: #475467;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.story-points {
+    display: grid;
+    gap: 12px;
+}
+
+.story-points div {
+    display: grid;
+    gap: 5px;
+    border: 1px solid #cde9e2;
+    border-radius: 14px;
+    padding: 16px 18px;
+    background: linear-gradient(135deg, #f3fbf8, #fff);
+}
+
+.story-points strong {
+    color: #111827;
+    font-size: 19px;
+}
+
+.story-points span {
+    color: #4b5563;
+    font-weight: 700;
+}
+
 .feature-grid {
     display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 12px;
 }
 
@@ -1589,11 +1727,55 @@ select:focus {
     background: #f59e0b;
 }
 
+.steps-section {
+    padding-bottom: 20px;
+}
+
+.order-steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.order-steps div {
+    display: grid;
+    gap: 8px;
+    min-height: 168px;
+    border: 1px solid #cde9e2;
+    border-radius: 14px;
+    padding: 18px;
+    background: #f7fbf9;
+}
+
+.order-steps span {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    color: #fff;
+    background: #0f766e;
+    font-size: 22px;
+    font-weight: 900;
+}
+
+.order-steps strong {
+    color: #111827;
+    font-size: 19px;
+    line-height: 1.25;
+}
+
+.order-steps p {
+    margin: 0;
+    color: #4b5563;
+    font-weight: 700;
+}
+
 .funnel-order {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(320px, 0.82fr);
     gap: 16px;
-    padding: 18px 42px 46px;
+    padding: 18px 46px 52px;
 }
 
 .order-card {
@@ -1608,6 +1790,26 @@ select:focus {
     margin-bottom: 12px;
     font-size: clamp(22px, 2.6vw, 30px);
     text-align: left;
+}
+
+.order-assurance {
+    display: grid;
+    gap: 4px;
+    border: 1px solid #bbf7d0;
+    border-radius: 12px;
+    padding: 13px 14px;
+    background: #f0fdf4;
+}
+
+.order-assurance strong {
+    color: #166534;
+    font-size: 17px;
+}
+
+.order-assurance span {
+    color: #3f4f46;
+    font-size: 14px;
+    font-weight: 800;
 }
 
 .form-label {
@@ -1786,6 +1988,21 @@ select:focus {
     color: #f05a00;
 }
 
+.summary-perks {
+    display: grid;
+    gap: 8px;
+    margin-top: 14px;
+    border-radius: 12px;
+    padding: 12px;
+    background: #f3fbf8;
+}
+
+.summary-perks span {
+    color: #0f5132;
+    font-size: 15px;
+    font-weight: 900;
+}
+
 .sticky-order-cta {
     position: fixed;
     left: 50%;
@@ -1866,6 +2083,12 @@ select:focus {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
+    .trust-strip,
+    .cleaning-story,
+    .order-steps {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .usage-grid,
     .reason-strip {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1874,6 +2097,10 @@ select:focus {
     .reason-strip div + div {
         border-left: 0;
         border-top: 1px solid #fed7aa;
+    }
+
+    .cleaning-story {
+        align-items: start;
     }
 }
 
@@ -1906,6 +2133,11 @@ select:focus {
     .delivery-strip {
         width: 100%;
         max-width: none;
+    }
+
+    .hero-benefits span {
+        min-height: 32px;
+        font-size: 13px;
     }
 
     .offer-card {
@@ -1946,10 +2178,25 @@ select:focus {
     }
 
     .delivery-strip,
+    .trust-strip,
+    .cleaning-story,
+    .order-steps,
     .feature-grid,
     .usage-grid,
     .reason-strip {
         grid-template-columns: 1fr;
+    }
+
+    .trust-strip div {
+        min-height: 76px;
+    }
+
+    .cleaning-story h2 {
+        font-size: 29px;
+    }
+
+    .story-copy p {
+        font-size: 16px;
     }
 
     .pill-options,
@@ -1996,6 +2243,21 @@ select:focus {
         height: min(430px, 88vw);
         border-width: 6px;
         border-radius: 18px;
+    }
+
+    .hero-product {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .hero-demo-card {
+        position: static;
+        width: 100%;
+        margin-top: 12px;
+    }
+
+    .hero-demo-card img {
+        height: 160px;
     }
 
     .sticky-order-cta {

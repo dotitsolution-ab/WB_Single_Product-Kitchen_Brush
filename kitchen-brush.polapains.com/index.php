@@ -49,6 +49,7 @@ require BASE_PATH . '/includes/header.php';
     $reasons = landing_rows('reason_rows', ['title']);
     $heroTitle = landing_value('hero_title');
     $heroImage = image_src(landing_image_value('hero_image_url'), (string)$product['image_url']);
+    $demoImage = image_src(landing_image_value('demo_image_url'), (string)$product['image_url']);
     ?>
     <section class="funnel">
         <div class="funnel-hero">
@@ -56,6 +57,12 @@ require BASE_PATH . '/includes/header.php';
                 <span class="funnel-badge"><?= e(landing_value('badge')) ?></span>
                 <h1><?= e($heroTitle) ?></h1>
                 <p><?= e(landing_value('hero_subtitle')) ?></p>
+
+                <div class="hero-benefits" aria-label="Product highlights">
+                    <span>ক্যাশ অন ডেলিভারি</span>
+                    <span>দ্রুত ডেলিভারি</span>
+                    <span>ঝুলিয়ে রাখা যায়</span>
+                </div>
 
                 <div class="offer-card">
                     <div class="offer-meta">
@@ -89,8 +96,55 @@ require BASE_PATH . '/includes/header.php';
 
             <div class="hero-product">
                 <img class="hero-main-img" src="<?= e($heroImage) ?>" alt="<?= e($product['name']) ?>" loading="eager" width="760" height="760">
+                <?php if ($demoImage !== '' && $demoImage !== $heroImage): ?>
+                    <div class="hero-demo-card">
+                        <img src="<?= e($demoImage) ?>" alt="Kitchen brush cleaning demo" loading="eager" width="220" height="160">
+                        <span>প্লেট, প্যান ও সিঙ্কে ব্যবহারযোগ্য</span>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
+
+        <section class="trust-strip" aria-label="Shopping benefits">
+            <div>
+                <strong>COD</strong>
+                <span>পণ্য হাতে পেয়ে পেমেন্ট</span>
+            </div>
+            <div>
+                <strong>24h</strong>
+                <span>দ্রুত কনফার্মেশন কল</span>
+            </div>
+            <div>
+                <strong>360°</strong>
+                <span>কোণায় কোণায় পরিষ্কার</span>
+            </div>
+            <div>
+                <strong>100%</strong>
+                <span>নিরাপদ অর্ডার তথ্য</span>
+            </div>
+        </section>
+
+        <section class="funnel-section cleaning-story">
+            <div class="story-copy">
+                <span class="section-kicker">দৈনন্দিন রান্নাঘরের জন্য</span>
+                <h2>তেল-চিটচিটে দাগ পরিষ্কার করুন কম সময়ে</h2>
+                <p>প্লেট, হাঁড়ি, ফ্রাইপ্যান বা সিঙ্কের কোণায় জমে থাকা দাগ পরিষ্কার করতে বারবার ঘষাঘষির ঝামেলা কমায় এই রোটেটিং কিচেন ব্রাশ।</p>
+            </div>
+            <div class="story-points">
+                <div>
+                    <strong>কম চাপেই পরিষ্কার</strong>
+                    <span>রোটেটিং হেড দাগের উপর সমানভাবে কাজ করে।</span>
+                </div>
+                <div>
+                    <strong>হাত শুকনো থাকে</strong>
+                    <span>লম্বা হ্যান্ডেল থাকায় সাবান-পানিতে হাত কম ভেজে।</span>
+                </div>
+                <div>
+                    <strong>গুছিয়ে রাখা সহজ</strong>
+                    <span>ব্যবহার শেষে হ্যাঙ্গিং হোলে ঝুলিয়ে শুকিয়ে রাখা যায়।</span>
+                </div>
+            </div>
+        </section>
 
         <?php if ($features): ?>
             <section class="funnel-section">
@@ -140,6 +194,27 @@ require BASE_PATH . '/includes/header.php';
             </section>
         <?php endif; ?>
 
+        <section class="funnel-section steps-section">
+            <h2>অর্ডার করা খুব সহজ</h2>
+            <div class="order-steps">
+                <div>
+                    <span>1</span>
+                    <strong>পরিমাণ নির্বাচন করুন</strong>
+                    <p>কত পিস লাগবে সেট করুন।</p>
+                </div>
+                <div>
+                    <span>2</span>
+                    <strong>নাম-ফোন-ঠিকানা দিন</strong>
+                    <p>সঠিক মোবাইল নম্বর দিলে দ্রুত কনফার্ম হবে।</p>
+                </div>
+                <div>
+                    <span>3</span>
+                    <strong>কল কনফার্মেশন</strong>
+                    <p>আমাদের টিম অর্ডার যাচাই করে পাঠাবে।</p>
+                </div>
+            </div>
+        </section>
+
         <section id="checkout" class="funnel-order">
             <form class="order-card" method="post" action="<?= e(base_url('checkout.php')) ?>" data-order-form data-unit-price="<?= e((string)(float)$product['price']) ?>" data-inside-charge="<?= e((string)$insideCharge) ?>" data-outside-charge="<?= e((string)$outsideCharge) ?>">
                 <h2>আপনার অর্ডার</h2>
@@ -147,6 +222,11 @@ require BASE_PATH . '/includes/header.php';
                     <div class="alert alert-error"><?= e($message) ?></div>
                 <?php endif; ?>
                 <?= csrf_field() ?>
+
+                <div class="order-assurance">
+                    <strong>কোনো অগ্রিম পেমেন্ট নেই</strong>
+                    <span>পণ্য হাতে পেয়ে পেমেন্ট করুন। অর্ডার সাবমিটের পর কনফার্মেশন কল যাবে।</span>
+                </div>
 
                 <div class="order-form-section">
                     <p class="form-label">কয় পিস অর্ডার করবেন?</p>
@@ -199,6 +279,11 @@ require BASE_PATH . '/includes/header.php';
                 <div class="summary-row"><span>সাবটোটাল:</span><strong data-summary-subtotal><?= e(taka((float)$product['price'] * $quantity)) ?></strong></div>
                 <div class="summary-row"><span>ডেলিভারি:</span><strong data-summary-delivery><?= e(taka((float)$deliveryOptions[$selectedDelivery]['charge'])) ?></strong></div>
                 <div class="summary-total"><span>মোট:</span><strong data-summary-total><?= e(taka(((float)$product['price'] * $quantity) + (float)$deliveryOptions[$selectedDelivery]['charge'])) ?></strong></div>
+                <div class="summary-perks">
+                    <span>✓ ক্যাশ অন ডেলিভারি</span>
+                    <span>✓ ফোনে অর্ডার কনফার্ম</span>
+                    <span>✓ নিরাপদ প্যাকেজিং</span>
+                </div>
             </aside>
         </section>
         <a class="sticky-order-cta" href="#checkout">

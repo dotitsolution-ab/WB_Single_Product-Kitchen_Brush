@@ -248,18 +248,18 @@ function product_highlights(array $product): array
 function landing_defaults(): array
 {
     return [
-        'badge' => 'স্মার্ট ক্লিনিং, সহজ জীবন',
-        'hero_title' => '৩৬০° রোটেটিং কিচেন ক্লিনিং ব্রাশ',
-        'hero_subtitle' => 'দাগ দূর হবে সহজে, ক্লিনিং হবে আরামে ও নিরাপদে',
-        'discount_label' => '২৫% ছাড়',
+        'badge' => 'রান্নাঘর পরিষ্কার এখন আরও সহজ',
+        'hero_title' => 'রোটেটিং কিচেন ব্রাশ দিয়ে তেল-দাগ পরিষ্কার করুন সহজে',
+        'hero_subtitle' => 'প্লেট, হাঁড়ি, ফ্রাইপ্যান ও সিঙ্কের কোণায় জমে থাকা দাগ পরিষ্কার করুন কম সময়ে, কম কষ্টে।',
+        'discount_label' => 'স্পেশাল অফার',
         'cta_text' => 'এখনই অর্ডার করুন',
         'hero_image_url' => 'assets/images/kitchen-brush-hero-drain.jpg',
         'demo_image_url' => 'assets/images/kitchen-brush-plate-demo.jpg',
         'delivery_inside_charge' => '60',
         'delivery_outside_charge' => '120',
-        'feature_rows' => "৩৬০° রোটেটিং ব্রাশ হেড|সব কোণায় পরিষ্কার|assets/images/kitchen-brush-pan-close.jpg\nশক্ত ব্রাশ|দাগ তুলতে সাহায্য করে|assets/images/kitchen-brush-frypan-foam.jpg\nলম্বা হ্যান্ডেল|ব্যবহারে সহজ|assets/images/kitchen-brush-pan-cleaning.jpg\nওয়াল হ্যাঙ্গিং|স্টোরেজ সহজ|assets/images/kitchen-brush-hanging-storage.jpg",
-        'usage_rows' => "প্লেট|assets/images/kitchen-brush-plate-demo.jpg\nফ্রাইপ্যান|assets/images/kitchen-brush-frypan-foam.jpg\nহাঁড়ি|assets/images/kitchen-brush-pan-cleaning.jpg\nস্টোরেজ|assets/images/kitchen-brush-hanging-storage.jpg",
-        'reason_rows' => "শ্রম ও সময় বাঁচায়\nদাগ দূর করে সহজে, স্ক্র্যাচ হয় না\nটেকসই রোটেশন, ঝামেলামুক্ত প্রয়োগ\nপচা গন্ধ কমায়, দাগ থাকে না",
+        'feature_rows' => "৩৬০° রোটেটিং ব্রাশ হেড|হাঁড়ি, প্যান ও সিঙ্কের কোণায় সহজে পৌঁছায়|assets/images/kitchen-brush-pan-close.jpg\nদাগ তোলা ব্রাশ|তেল-চিটচিটে দাগ তুলতে সহায়ক|assets/images/kitchen-brush-plate-stain.jpg\nআরামদায়ক হ্যান্ডেল|ধরা সহজ, দীর্ঘ সময় ব্যবহারেও আরামদায়ক|assets/images/kitchen-brush-frypan-foam.jpg\nওয়াল হ্যাঙ্গিং|ব্যবহার শেষে ঝুলিয়ে শুকিয়ে রাখা যায়|assets/images/kitchen-brush-hanging-storage.jpg\nমাল্টি-সারফেস ইউজ|প্লেট, হাঁড়ি, প্যান, সিঙ্কে ব্যবহারযোগ্য|assets/images/kitchen-brush-pan-cleaning.jpg\nকম সাবানেও ফোম|পরিষ্কার করতে কম সময় ও কম পরিশ্রম লাগে|assets/images/kitchen-brush-frypan-foam.jpg",
+        'usage_rows' => "প্লেটের দাগ|assets/images/kitchen-brush-plate-stain.jpg\nফ্রাইপ্যানের তেল|assets/images/kitchen-brush-frypan-foam.jpg\nহাঁড়ি ও প্যান|assets/images/kitchen-brush-pan-close.jpg\nঝুলিয়ে স্টোরেজ|assets/images/kitchen-brush-hanging-storage.jpg",
+        'reason_rows' => "শ্রম ও সময় বাঁচায়\nতেল-চিটচিটে দাগ পরিষ্কার করতে সহায়ক\nহাতের গ্রিপ আরামদায়ক\nব্যবহার শেষে ঝুলিয়ে রাখা যায়",
     ];
 }
 
@@ -404,10 +404,10 @@ function seed_kitchen_brush_content(): void
     }
 
     $data = landing_defaults();
-    $data['name'] = '৩৬০° রোটেটিং কিচেন ক্লিনিং ব্রাশ';
-    $data['tagline'] = 'স্মার্ট ক্লিনিং, সহজ জীবন';
-    $data['description'] = 'দাগ দূর হবে সহজে, ক্লিনিং হবে আরামে ও নিরাপদে।';
-    $data['highlights'] = "৩৬০° রোটেটিং ব্রাশ হেড\nশক্ত ব্রাশ দাগ তুলতে সহায়ক\nলম্বা হ্যান্ডেল ব্যবহারে সহজ\nওয়াল হ্যাঙ্গিং স্টোরেজ";
+    $data['name'] = 'রোটেটিং কিচেন ক্লিনিং ব্রাশ';
+    $data['tagline'] = 'রান্নাঘর পরিষ্কার এখন আরও সহজ';
+    $data['description'] = 'প্লেট, হাঁড়ি, ফ্রাইপ্যান ও সিঙ্কের কোণায় জমে থাকা দাগ পরিষ্কার করুন কম সময়ে, কম কষ্টে।';
+    $data['highlights'] = "৩৬০° রোটেটিং ব্রাশ হেড\nতেল-চিটচিটে দাগ তুলতে সহায়ক\nআরামদায়ক হ্যান্ডেল\nওয়াল হ্যাঙ্গিং স্টোরেজ\nপ্লেট, হাঁড়ি, প্যান ও সিঙ্কে ব্যবহারযোগ্য";
     $data['price'] = '299';
     $data['compare_price'] = '399';
     $data['stock'] = (string)max(100, (int)$product['stock']);
