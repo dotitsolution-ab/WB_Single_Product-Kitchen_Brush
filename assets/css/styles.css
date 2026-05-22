@@ -2315,3 +2315,21 @@ select:focus {
         padding: 20px 16px;
     }
 }
+
+@media (max-width: 640px) {
+    body.landing-body .sticky-order-cta {
+        left: 0 !important;
+        right: 0 !important;
+        width: calc(100% - 24px) !important;
+        max-width: 360px !important;
+        margin-right: auto !important;
+        margin-left: auto !important;
+        padding-right: 14px !important;
+        padding-left: 14px !important;
+        transform: none !important;
+    }
+
+    body.landing-body .sticky-order-cta.is-hidden {
+        transform: translateY(12px) !important;
+    }
+}
