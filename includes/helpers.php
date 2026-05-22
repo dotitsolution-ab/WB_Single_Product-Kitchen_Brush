@@ -152,6 +152,46 @@ function display_phone(string $phone): string
     return normalize_phone($phone);
 }
 
+function text_has_mojibake(string $value): bool
+{
+    return preg_match('/(?:Ã|Â|â|à[¦§¥]|à¥)/u', $value) === 1;
+}
+
+function repair_text_encoding(string $value): string
+{
+    $current = $value;
+
+    if ($current === '' || !function_exists('iconv')) {
+        return $current;
+    }
+
+    if (preg_match('/[\x{0980}-\x{09FF}]/u', $current) === 1) {
+        return str_replace(['Â°', 'âœ“', 'â˜…'], ['°', '✓', '★'], $current);
+    }
+
+    for ($attempt = 0; $attempt < 3 && text_has_mojibake($current); $attempt++) {
+        $decoded = @iconv('UTF-8', 'Windows-1252//IGNORE', $current);
+        if ($decoded === false || $decoded === '' || $decoded === $current || preg_match('//u', $decoded) !== 1) {
+            break;
+        }
+
+        $current = $decoded;
+    }
+
+    return $current;
+}
+
+function repair_text_fields(array $row, array $fields): array
+{
+    foreach ($fields as $field) {
+        if (isset($row[$field]) && is_string($row[$field])) {
+            $row[$field] = repair_text_encoding($row[$field]);
+        }
+    }
+
+    return $row;
+}
+
 function status_options(): array
 {
     return ['Pending', 'Confirmed', 'Processing', 'Shipped', 'Delivered', 'Cancelled'];
@@ -185,11 +225,14 @@ function setting(string $key, string $default = ''): string
         }
     }
 
-    return array_key_exists($key, $settings) ? (string)$settings[$key] : $default;
+    $value = array_key_exists($key, $settings) ? (string)$settings[$key] : $default;
+    return repair_text_encoding($value);
 }
 
 function save_setting(string $key, string $value): void
 {
+    $value = repair_text_encoding($value);
+
     $stmt = db()->prepare(
         'INSERT INTO settings (key_name, value_text) VALUES (:key_name, :value_text)
          ON CONFLICT (key_name) DO UPDATE

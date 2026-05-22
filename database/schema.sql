@@ -164,11 +164,11 @@ INSERT INTO products
     (name, slug, tagline, description, highlights, price, compare_price, delivery_charge, stock, image_url, is_active)
 VALUES
     (
-        'à§©à§¬à§¦Â° à¦°à§‹à¦Ÿà§‡à¦Ÿà¦¿à¦‚ à¦•à¦¿à¦šà§‡à¦¨ à¦•à§à¦²à¦¿à¦¨à¦¿à¦‚ à¦¬à§à¦°à¦¾à¦¶',
+        '৩৬০° রোটেটিং কিচেন ক্লিনিং ব্রাশ',
         'rotating-kitchen-cleaning-brush',
-        'à¦¸à§à¦®à¦¾à¦°à§à¦Ÿ à¦•à§à¦²à¦¿à¦¨à¦¿à¦‚, à¦¸à¦¹à¦œ à¦œà§€à¦¬à¦¨',
-        'à¦¦à¦¾à¦— à¦¦à§‚à¦° à¦¹à¦¬à§‡ à¦¸à¦¹à¦œà§‡, à¦•à§à¦²à¦¿à¦¨à¦¿à¦‚ à¦¹à¦¬à§‡ à¦†à¦°à¦¾à¦®à§‡ à¦“ à¦¨à¦¿à¦°à¦¾à¦ªà¦¦à§‡à¥¤',
-        E'à§©à§¬à§¦Â° à¦°à§‹à¦Ÿà§‡à¦Ÿà¦¿à¦‚ à¦¬à§à¦°à¦¾à¦¶ à¦¹à§‡à¦¡\nà¦¶à¦•à§à¦¤ à¦¬à§à¦°à¦¾à¦¶ à¦¦à¦¾à¦— à¦¤à§à¦²à¦¤à§‡ à¦¸à¦¹à¦¾à§Ÿà¦•\nà¦²à¦®à§à¦¬à¦¾ à¦¹à§à¦¯à¦¾à¦¨à§à¦¡à§‡à¦² à¦¬à§à¦¯à¦¬à¦¹à¦¾à¦°à§‡ à¦¸à¦¹à¦œ',
+        'স্মার্ট ক্লিনিং, সহজ জীবন',
+        'দাগ দূর হবে সহজে, ক্লিনিং হবে আরামে ও নিরাপদে।',
+        E'৩৬০° রোটেটিং ব্রাশ হেড\nশক্ত ব্রাশ দাগ তুলতে সহায়ক\nলম্বা হ্যান্ডেল ব্যবহারে সহজ',
         299,
         399,
         60,
@@ -205,7 +205,7 @@ INSERT INTO settings (key_name, value_text) VALUES
     ('admin_order_email_subject', 'New order {{order_number}} - {{site_name}}'),
     ('admin_order_email_html', ''),
     ('admin_order_email_text', ''),
-    ('customer_order_email_subject', 'à¦†à¦ªà¦¨à¦¾à¦° à¦…à¦°à§à¦¡à¦¾à¦°à¦Ÿà¦¿ à¦—à§à¦°à¦¹à¦£ à¦•à¦°à¦¾ à¦¹à§Ÿà§‡à¦›à§‡ - {{order_number}}'),
+    ('customer_order_email_subject', 'আপনার অর্ডারটি গ্রহণ করা হয়েছে - {{order_number}}'),
     ('customer_order_email_html', ''),
     ('customer_order_email_text', ''),
     ('sms_enabled', '0'),
@@ -217,7 +217,7 @@ INSERT INTO settings (key_name, value_text) VALUES
     ('sms_sender_id', ''),
     ('sms_request_body', 'api_key={{sms_api_key}}&senderid={{sms_sender_id}}&number={{phone_880}}&message={{message_url}}'),
     ('sms_success_keyword', ''),
-    ('customer_order_sms_message', 'à¦ªà§à¦°à¦¿à§Ÿ {{customer_name}}, à¦†à¦ªà¦¨à¦¾à¦° à¦…à¦°à§à¦¡à¦¾à¦° {{order_number}} à¦—à§à¦°à¦¹à¦£ à¦•à¦°à¦¾ à¦¹à§Ÿà§‡à¦›à§‡à¥¤ à¦®à§‹à¦Ÿ {{total}}à¥¤ {{site_name}}')
+    ('customer_order_sms_message', 'প্রিয় {{customer_name}}, আপনার অর্ডার {{order_number}} গ্রহণ করা হয়েছে। মোট {{total}}। {{site_name}}')
 ON CONFLICT (key_name) DO UPDATE SET
     value_text = EXCLUDED.value_text,
     updated_at = CURRENT_TIMESTAMP;

@@ -6,7 +6,11 @@ function active_product(): ?array
 {
     $stmt = db()->query('SELECT * FROM products WHERE is_active = 1 ORDER BY id ASC LIMIT 1');
     $product = $stmt->fetch();
-    return $product ?: null;
+    if (!$product) {
+        return null;
+    }
+
+    return repair_text_fields($product, ['name', 'tagline', 'description', 'highlights']);
 }
 
 function ensure_email_schema(): void
@@ -418,6 +422,13 @@ function seed_kitchen_brush_content(): void
     }
 
     save_product($data);
+
+    foreach (email_defaults() as $key => $value) {
+        if (str_starts_with($key, 'customer_order_email_')) {
+            save_setting($key, $value);
+        }
+    }
+    save_setting('customer_order_sms_message', sms_defaults()['customer_order_sms_message']);
 }
 
 function create_cod_order(array $data): array
@@ -592,7 +603,7 @@ function order_with_items_by_id(int $id): ?array
 
     $order['items'] = order_items((int)$order['id']);
     $order['shipment'] = order_shipment((int)$order['id']);
-    return $order;
+    return repair_text_fields($order, ['customer_name', 'customer_address', 'district_area', 'delivery_note']);
 }
 
 function order_by_number(string $orderNumber, ?string $phone = null): ?array
@@ -615,14 +626,17 @@ function order_by_number(string $orderNumber, ?string $phone = null): ?array
 
     $order['items'] = order_items((int)$order['id']);
     $order['shipment'] = order_shipment((int)$order['id']);
-    return $order;
+    return repair_text_fields($order, ['customer_name', 'customer_address', 'district_area', 'delivery_note']);
 }
 
 function order_items(int $orderId): array
 {
     $stmt = db()->prepare('SELECT * FROM order_items WHERE order_id = :order_id ORDER BY id ASC');
     $stmt->execute(['order_id' => $orderId]);
-    return $stmt->fetchAll();
+    return array_map(
+        static fn (array $item): array => repair_text_fields($item, ['product_name']),
+        $stmt->fetchAll()
+    );
 }
 
 function order_shipment(int $orderId): ?array
@@ -1034,7 +1048,10 @@ function list_orders(array $filters = []): array
 
     $stmt = db()->prepare($sql);
     $stmt->execute($params);
-    return $stmt->fetchAll();
+    return array_map(
+        static fn (array $order): array => repair_text_fields($order, ['customer_name', 'customer_address', 'district_area', 'delivery_note']),
+        $stmt->fetchAll()
+    );
 }
 
 function dashboard_stats(): array
@@ -1153,10 +1170,10 @@ function save_product(array $data): void
          WHERE id = :id'
     );
     $stmt->execute([
-        'name' => trim((string)$data['name']),
-        'tagline' => trim((string)$data['tagline']),
-        'description' => trim((string)$data['description']),
-        'highlights' => trim((string)$data['highlights']),
+        'name' => repair_text_encoding(trim((string)$data['name'])),
+        'tagline' => repair_text_encoding(trim((string)$data['tagline'])),
+        'description' => repair_text_encoding(trim((string)$data['description'])),
+        'highlights' => repair_text_encoding(trim((string)$data['highlights'])),
         'price' => (float)$data['price'],
         'compare_price' => $data['compare_price'] === '' ? null : (float)$data['compare_price'],
         'delivery_charge' => (float)($data['landing_delivery_inside_charge'] ?? $data['delivery_charge']),

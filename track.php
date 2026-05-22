@@ -6,38 +6,43 @@ require_once __DIR__ . '/bootstrap.php';
 
 $order = null;
 $lookupError = null;
+$orderNumberValue = (string)($_POST['order_number'] ?? $_GET['order'] ?? '');
 
 if (is_post()) {
     verify_csrf();
-    $order = order_by_number((string)($_POST['order_number'] ?? ''), (string)($_POST['phone'] ?? ''));
+    $order = order_by_number($orderNumberValue, (string)($_POST['phone'] ?? ''));
     if (!$order) {
-        $lookupError = 'Tracking details were not found for that order.';
+        $lookupError = 'এই অর্ডারের তথ্য পাওয়া যায়নি। Order ID ও মোবাইল নম্বর মিলিয়ে আবার চেষ্টা করুন।';
     }
 }
 
-$pageTitle = 'Track Order';
+$pageTitle = 'অর্ডার ট্র্যাক করুন';
+$bodyClass = 'tracking-body';
 require BASE_PATH . '/includes/header.php';
 ?>
 
-<section class="container section narrow">
-    <form class="content-panel" method="post">
-        <h1>Track Order</h1>
+<section class="track-page">
+    <div class="container narrow">
+    <form class="track-card" method="post">
+        <span class="track-eyebrow">অর্ডার স্ট্যাটাস</span>
+        <h1>অর্ডার ট্র্যাক করুন</h1>
+        <p>আপনার Order ID এবং অর্ডার করার সময় দেওয়া মোবাইল নম্বর লিখুন।</p>
         <?php if ($lookupError): ?>
             <div class="alert alert-error"><?= e($lookupError) ?></div>
         <?php endif; ?>
         <?= csrf_field() ?>
         <label>
             Order ID
-            <input type="text" name="order_number" value="<?= e($_POST['order_number'] ?? '') ?>" required>
+            <input type="text" name="order_number" value="<?= e($orderNumberValue) ?>" required placeholder="SP260522ABC123">
         </label>
         <label>
-            Phone
+            মোবাইল নম্বর
             <span class="phone-field">
                 <span class="phone-prefix">+88</span>
                 <input type="tel" name="phone" value="<?= e(normalize_phone((string)($_POST['phone'] ?? ''))) ?>" inputmode="numeric" pattern="01[3-9][0-9]{8}" maxlength="11" data-phone-input required placeholder="01XXXXXXXXX">
             </span>
         </label>
-        <button class="button button-primary button-full" type="submit">Track</button>
+        <button class="button track-submit button-full" type="submit">ট্র্যাক করুন</button>
     </form>
 
     <?php if ($order): ?>
@@ -53,8 +58,8 @@ require BASE_PATH . '/includes/header.php';
                 </div>
             <?php endforeach; ?>
         </div>
-        <div class="content-panel">
-            <h2>Current Status</h2>
+        <div class="track-result-card">
+            <h2>বর্তমান স্ট্যাটাস</h2>
             <p><span class="<?= e(status_class($order['status'])) ?>"><?= e($order['status']) ?></span></p>
             <?php if ($order['shipment']): ?>
                 <div class="summary-table">
@@ -65,6 +70,7 @@ require BASE_PATH . '/includes/header.php';
             <?php endif; ?>
         </div>
     <?php endif; ?>
+    </div>
 </section>
 
 <?php require BASE_PATH . '/includes/footer.php'; ?>

@@ -5,6 +5,12 @@ declare(strict_types=1);
 $pageTitle = $pageTitle ?? setting('site_name', app_config('app.name', 'Single Product Store'));
 $bodyClass = $bodyClass ?? '';
 $hideHeader = $hideHeader ?? false;
+$currentPage = basename((string)parse_url((string)($_SERVER['SCRIPT_NAME'] ?? ''), PHP_URL_PATH));
+$publicNav = [
+    ['label' => 'শপ', 'href' => '/', 'active' => ['index.php', '']],
+    ['label' => 'আমার অ্যাকাউন্ট', 'href' => 'account.php', 'active' => ['account.php']],
+    ['label' => 'অর্ডার ট্র্যাক', 'href' => 'track.php', 'active' => ['track.php']],
+];
 ?>
 <!doctype html>
 <html lang="en">
@@ -24,9 +30,10 @@ $hideHeader = $hideHeader ?? false;
     <div class="container header-grid">
         <a class="brand" href="<?= e(base_url('/')) ?>"><?= e(setting('site_name', app_config('app.name', 'Store'))) ?></a>
         <nav class="site-nav" aria-label="Primary navigation">
-            <a href="<?= e(base_url('/')) ?>">Shop</a>
-            <a href="<?= e(base_url('account.php')) ?>">My Account</a>
-            <a href="<?= e(base_url('track.php')) ?>">Track Order</a>
+            <?php foreach ($publicNav as $item): ?>
+                <?php $isActive = in_array($currentPage, $item['active'], true); ?>
+                <a class="<?= $isActive ? 'is-active' : '' ?>" href="<?= e(base_url($item['href'])) ?>" <?= $isActive ? 'aria-current="page"' : '' ?>><?= e($item['label']) ?></a>
+            <?php endforeach; ?>
         </nav>
     </div>
 </header>
