@@ -354,5 +354,5 @@ function render_whatsapp_button(): void
         return;
     }
 
-    echo '<a class="whatsapp-float" href="' . e($url) . '" target="_blank" rel="noopener" aria-label="Message us on WhatsApp">WhatsApp</a>' . PHP_EOL;
+    echo '<a class="whatsapp-float" href="' . e($url) . '" target="_blank" rel="noopener" aria-label="Message us on WhatsApp"><svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M16 4C9.38 4 4 9.22 4 15.66c0 2.08.58 4.12 1.68 5.9L4.6 28l6.62-1.7A12.25 12.25 0 0 0 16 27.32c6.62 0 12-5.22 12-11.66S22.62 4 16 4Z" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linejoin="round"/><path d="M11.7 10.55c.28-.62.56-.64.82-.64h.6c.2 0 .5.06.76.36.26.3.98 1 .98 2.42 0 1.42-1.02 2.8-1.16 2.98-.14.2-.22.38-.08.64.14.28.64 1.05 1.38 1.7.96.84 1.76 1.1 2.04 1.22.28.1.48.08.66-.12.2-.22.78-.9 1-1.22.2-.32.42-.26.7-.16.28.1 1.82.84 2.12 1 .32.16.52.24.6.38.08.14.08.82-.2 1.6-.28.78-1.58 1.5-2.2 1.56-.56.06-1.28.08-2.06-.12-.48-.12-1.08-.34-1.86-.66-3.28-1.38-5.42-4.58-5.58-4.8-.16-.22-1.34-1.78-1.34-3.38 0-1.6.84-2.38 1.14-2.7Z" fill="currentColor"/></svg></a>' . PHP_EOL;
 }

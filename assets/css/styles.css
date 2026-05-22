@@ -545,16 +545,24 @@ select:focus {
     right: 18px;
     bottom: 18px;
     z-index: 60;
+    width: 52px;
+    height: 52px;
     min-height: 48px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     border-radius: 999px;
-    padding: 0 18px;
+    padding: 0;
     color: #fff;
-    background: #16a34a;
+    background: #25d366;
     box-shadow: 0 16px 34px rgba(22, 163, 74, 0.32);
     font-weight: 900;
+}
+
+.whatsapp-float svg {
+    width: 29px;
+    height: 29px;
+    display: block;
 }
 
 .thank-you-body {
@@ -2432,26 +2440,38 @@ select:focus {
 
 @media (max-width: 640px) {
     body.landing-body .sticky-order-cta {
-        left: 14px !important;
-        right: 14px !important;
+        left: 50% !important;
+        right: auto !important;
         bottom: 10px !important;
-        width: auto !important;
+        width: calc(100vw - 48px) !important;
         min-width: 0 !important;
-        max-width: none !important;
+        max-width: 320px !important;
         margin: 0 !important;
         padding-right: 14px !important;
         padding-left: 14px !important;
-        transform: none !important;
+        transform: translateX(-50%) !important;
     }
 
     body.landing-body .sticky-order-cta.is-hidden {
-        transform: translateY(12px) !important;
+        transform: translate(-50%, 12px) !important;
+    }
+
+    body.landing-body .sticky-order-cta span {
+        width: 100%;
+        text-align: center !important;
     }
 
     body.landing-body .whatsapp-float {
+        width: 48px !important;
+        height: 48px !important;
         right: auto !important;
         left: 14px !important;
         bottom: 76px !important;
         z-index: 70;
+    }
+
+    body.landing-body .whatsapp-float svg {
+        width: 27px;
+        height: 27px;
     }
 }
