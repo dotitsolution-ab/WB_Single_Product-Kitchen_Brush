@@ -235,9 +235,7 @@ function save_setting(string $key, string $value): void
 
     $stmt = db()->prepare(
         'INSERT INTO settings (key_name, value_text) VALUES (:key_name, :value_text)
-         ON CONFLICT (key_name) DO UPDATE
-         SET value_text = EXCLUDED.value_text,
-             updated_at = CURRENT_TIMESTAMP'
+         ON DUPLICATE KEY UPDATE value_text = VALUES(value_text)'
     );
     $stmt->execute([
         'key_name' => $key,

@@ -104,3 +104,13 @@ APP_INSTALL_DISABLED=true
 ```
 
 This blocks `install.php` before running ads.
+
+## 6. Meta CAPI
+
+After login, open `/admin/settings.php` and add:
+
+- Facebook Pixel ID
+- Meta CAPI Access Token
+- Meta CAPI Test Event Code, only while testing in Events Manager
+
+Orders will send server-side `Purchase` events through Meta Conversions API.

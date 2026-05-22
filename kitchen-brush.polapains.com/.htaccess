@@ -1,0 +1,33 @@
+Options -Indexes -MultiViews
+ServerSignature Off
+
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+    Header set X-Permitted-Cross-Domain-Policies "none"
+    Header unset X-Powered-By
+
+    <FilesMatch "\.(css|js|png|jpg|jpeg|gif|webp|svg|ico|woff2?)$">
+        Header set Cache-Control "public, max-age=2592000, immutable"
+    </FilesMatch>
+</IfModule>
+
+<LimitExcept GET POST HEAD>
+    Require all denied
+</LimitExcept>
+
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "^(config|config\.sample|bootstrap)\.php$">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "\.(sql|bak|backup|old|orig|dist|ini|log|sh|yml|yaml|md|lock|env)$">
+    Require all denied
+</FilesMatch>
+
+RedirectMatch 403 ^/(includes|database|storage)/.*$

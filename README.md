@@ -24,8 +24,13 @@ For Dokploy production steps, follow `DOKPLOY.md`.
 - Manage product price, stock, images, and delivery charge.
 - View/filter orders and update statuses.
 - Print invoices from each order detail page.
-- Add GTM, GA4, Facebook Pixel, verification meta tags, and Steadfast credentials in settings.
+- Add GTM, GA4, Facebook Pixel, Meta Conversions API, verification meta tags, and Steadfast credentials in settings.
 - Create a Steadfast shipment from an order detail page.
+
+## Meta Conversions API
+
+Add the Facebook Pixel ID and Meta CAPI Access Token from Meta Events Manager in `/admin/settings.php`.
+When a COD order is created, the app sends a server-side `Purchase` event to Meta and uses the same `event_id` on the thank-you page Pixel event for deduplication.
 
 ## Steadfast
 
