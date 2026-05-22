@@ -14,6 +14,30 @@
     --shadow: 0 16px 40px rgba(22, 35, 31, 0.08);
 }
 
+@font-face {
+    font-family: "Li Ador Noirrit";
+    src: url("../fonts/LiAdorNoirrit-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Li Ador Noirrit";
+    src: url("../fonts/LiAdorNoirrit-SemiBold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Li Ador Noirrit";
+    src: url("../fonts/LiAdorNoirrit-Bold.ttf") format("truetype");
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -26,7 +50,7 @@ body {
     margin: 0;
     background: var(--bg);
     color: var(--ink);
-    font-family: "Noto Sans Bengali", "Hind Siliguri", "Nirmala UI", "SolaimanLipi", "Segoe UI", Arial, sans-serif;
+    font-family: "Li Ador Noirrit", "Noto Sans Bengali", "Hind Siliguri", "Nirmala UI", "SolaimanLipi", "Segoe UI", Arial, sans-serif;
     line-height: 1.5;
 }
 
@@ -1530,8 +1554,9 @@ select:focus {
 .trust-strip {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1px;
-    background: #0f766e;
+    gap: 12px;
+    padding: 18px 46px 4px;
+    background: #fff;
 }
 
 .trust-strip div {
@@ -1540,18 +1565,21 @@ select:focus {
     min-height: 94px;
     align-content: center;
     padding: 14px 20px;
-    color: #fff;
-    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid #cde9e2;
+    border-radius: 14px;
+    color: #0f766e;
+    background: linear-gradient(135deg, #f2fbf8, #fffaf4);
     text-align: center;
 }
 
 .trust-strip strong {
+    color: #0f766e;
     font-size: clamp(26px, 3vw, 34px);
     line-height: 1;
 }
 
 .trust-strip span {
-    color: rgba(255, 255, 255, 0.88);
+    color: #1f3f39;
     font-size: 15px;
     font-weight: 800;
 }
@@ -1632,10 +1660,10 @@ select:focus {
     align-content: start;
     justify-items: center;
     gap: 8px;
-    border: 1px solid #fed7aa;
+    border: 1px solid #f8d0a1;
     border-radius: 12px;
     padding: 14px 10px;
-    background: #fffdf9;
+    background: linear-gradient(180deg, #fffdf9, #f5fbf8);
     text-align: center;
 }
 
@@ -1695,10 +1723,10 @@ select:focus {
 .reason-strip {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    border: 1px solid #fed7aa;
+    gap: 10px;
+    border: 0;
     border-radius: 14px;
-    overflow: hidden;
-    background: #fffdf9;
+    background: transparent;
 }
 
 .reason-strip div {
@@ -1706,14 +1734,17 @@ select:focus {
     align-items: center;
     gap: 12px;
     min-height: 74px;
+    border: 1px solid #f8d0a1;
+    border-radius: 14px;
     padding: 12px 16px;
     color: #27272a;
+    background: #fffdf9;
     font-size: 18px;
     font-weight: 900;
 }
 
 .reason-strip div + div {
-    border-left: 1px solid #fed7aa;
+    border-left: 1px solid #f8d0a1;
 }
 
 .reason-strip span {
@@ -1744,7 +1775,7 @@ select:focus {
     border: 1px solid #cde9e2;
     border-radius: 14px;
     padding: 18px;
-    background: #f7fbf9;
+    background: linear-gradient(135deg, #f3fbf8, #fffdf8);
 }
 
 .order-steps span {
@@ -2103,8 +2134,8 @@ select:focus {
     }
 
     .reason-strip div + div {
-        border-left: 0;
-        border-top: 1px solid #fed7aa;
+        border-left: 1px solid #f8d0a1;
+        border-top: 1px solid #f8d0a1;
     }
 
     .cleaning-story {
@@ -2187,16 +2218,34 @@ select:focus {
 
     .delivery-strip,
     .trust-strip,
-    .cleaning-story,
     .order-steps,
     .feature-grid,
     .usage-grid,
     .reason-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cleaning-story {
         grid-template-columns: 1fr;
+    }
+
+    .trust-strip {
+        gap: 10px;
+        padding: 14px;
     }
 
     .trust-strip div {
         min-height: 76px;
+        padding: 12px 8px;
+    }
+
+    .trust-strip strong {
+        font-size: 25px;
+    }
+
+    .trust-strip span {
+        font-size: 13px;
+        line-height: 1.25;
     }
 
     .cleaning-story h2 {
@@ -2233,8 +2282,41 @@ select:focus {
     }
 
     .delivery-strip div + div {
-        border-left: 0;
+        border-left: 1px solid #fed7aa;
         border-top: 1px solid #fed7aa;
+    }
+
+    .delivery-strip div {
+        padding: 10px 8px;
+    }
+
+    .delivery-strip strong {
+        font-size: 15px;
+    }
+
+    .delivery-strip span {
+        font-size: 13px;
+    }
+
+    .feature-tile {
+        min-height: 182px;
+        padding: 12px 8px;
+    }
+
+    .feature-tile img {
+        width: 64px;
+        height: 58px;
+    }
+
+    .feature-tile strong,
+    .order-steps strong {
+        font-size: 16px;
+    }
+
+    .feature-tile span,
+    .order-steps p {
+        font-size: 13px;
+        line-height: 1.35;
     }
 
     .funnel-section h2::before,
@@ -2244,7 +2326,39 @@ select:focus {
 
     .usage-card,
     .usage-card img {
-        min-height: 220px;
+        min-height: 170px;
+    }
+
+    .usage-card strong {
+        min-width: 88px;
+        padding: 7px 12px;
+        font-size: 18px;
+        line-height: 1.15;
+    }
+
+    .reason-strip div {
+        min-height: 74px;
+        gap: 8px;
+        padding: 10px;
+        font-size: 15px;
+        line-height: 1.25;
+    }
+
+    .reason-strip span {
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+    }
+
+    .order-steps div {
+        min-height: 158px;
+        padding: 14px 12px;
+    }
+
+    .order-steps span {
+        width: 36px;
+        height: 36px;
+        font-size: 19px;
     }
 
     .hero-main-img {
