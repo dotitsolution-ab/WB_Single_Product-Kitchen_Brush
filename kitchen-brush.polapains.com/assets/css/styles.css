@@ -2005,10 +2005,13 @@ select:focus {
 
 .sticky-order-cta {
     position: fixed;
-    left: 50%;
+    left: 12px;
+    right: 12px;
     bottom: 14px;
     z-index: 50;
-    width: min(460px, calc(100% - 24px));
+    width: auto;
+    max-width: 460px;
+    margin-inline: auto;
     min-height: 56px;
     display: inline-flex;
     align-items: center;
@@ -2022,7 +2025,7 @@ select:focus {
     font-weight: 900;
     line-height: 1;
     text-align: center;
-    transform: translateX(-50%);
+    transform: translateY(0);
     transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
 }
 
@@ -2030,7 +2033,7 @@ select:focus {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transform: translate(-50%, 12px);
+    transform: translateY(12px);
 }
 
 .sticky-order-cta strong {
@@ -2041,7 +2044,9 @@ select:focus {
 }
 
 .sticky-order-cta span {
+    min-width: 0;
     text-align: center;
+    white-space: nowrap;
 }
 
 @media print {
@@ -2261,6 +2266,8 @@ select:focus {
     }
 
     .sticky-order-cta {
+        left: 10px;
+        right: 10px;
         bottom: 10px;
         min-height: 52px;
         gap: 8px;
