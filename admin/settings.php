@@ -6,6 +6,16 @@ require_once __DIR__ . '/../bootstrap.php';
 
 Auth::requireAdmin();
 
+$metaCapiStatus = [
+    'access_token' => setting('facebook_capi_access_token') !== '' ? 'Saved' : 'Missing',
+    'last_status' => setting('facebook_capi_last_status', 'No server event sent yet'),
+    'last_message' => setting('facebook_capi_last_message'),
+    'last_order' => setting('facebook_capi_last_order'),
+    'last_event_id' => setting('facebook_capi_last_event_id'),
+    'last_checked_at' => setting('facebook_capi_last_checked_at'),
+    'last_response' => setting('facebook_capi_last_response'),
+];
+
 $settings = [
     'site_name' => 'Site Name',
     'contact_phone' => 'Contact Phone',
@@ -69,6 +79,26 @@ require BASE_PATH . '/includes/admin_header.php';
             Meta CAPI Access Token
             <input type="password" name="facebook_capi_access_token" placeholder="Leave blank to keep current token">
         </label>
+        <div class="settings-card">
+            <h2>Meta CAPI Diagnostics</h2>
+            <p class="muted">Access token: <strong><?= e($metaCapiStatus['access_token']) ?></strong></p>
+            <p class="muted">Last status: <strong><?= e($metaCapiStatus['last_status']) ?></strong></p>
+            <?php if ($metaCapiStatus['last_message'] !== ''): ?>
+                <p class="muted">Message: <?= e($metaCapiStatus['last_message']) ?></p>
+            <?php endif; ?>
+            <?php if ($metaCapiStatus['last_order'] !== ''): ?>
+                <p class="muted">Order: <?= e($metaCapiStatus['last_order']) ?></p>
+            <?php endif; ?>
+            <?php if ($metaCapiStatus['last_event_id'] !== ''): ?>
+                <p class="muted">Event ID: <?= e($metaCapiStatus['last_event_id']) ?></p>
+            <?php endif; ?>
+            <?php if ($metaCapiStatus['last_checked_at'] !== ''): ?>
+                <p class="muted">Checked at: <?= e($metaCapiStatus['last_checked_at']) ?></p>
+            <?php endif; ?>
+            <?php if ($metaCapiStatus['last_response'] !== ''): ?>
+                <p class="muted">Response: <?= e($metaCapiStatus['last_response']) ?></p>
+            <?php endif; ?>
+        </div>
         <button class="button button-primary" type="submit">Save Settings</button>
     </form>
 </section>

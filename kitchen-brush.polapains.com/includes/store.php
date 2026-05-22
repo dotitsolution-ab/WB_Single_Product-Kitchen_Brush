@@ -546,15 +546,39 @@ function send_meta_purchase_event(array $order): void
         return;
     }
 
+    $orderNumber = (string)($order['order_number'] ?? '');
+    $eventId = meta_purchase_event_id($order);
+
     try {
         $client = MetaConversionsApiClient::fromSettings();
         if (!$client instanceof MetaConversionsApiClient) {
+            record_meta_capi_status('skipped', 'Missing Facebook Pixel ID or Meta CAPI Access Token.', $orderNumber, $eventId);
             return;
         }
 
-        $client->sendPurchase($order);
+        $response = $client->sendPurchase($order);
+        record_meta_capi_status('sent', 'Meta accepted the server Purchase event.', $orderNumber, $eventId, $response);
     } catch (Throwable $exception) {
-        error_log('Meta CAPI Purchase failed for order ' . (string)($order['order_number'] ?? '') . ': ' . $exception->getMessage());
+        record_meta_capi_status('failed', $exception->getMessage(), $orderNumber, $eventId);
+        error_log('Meta CAPI Purchase failed for order ' . $orderNumber . ': ' . $exception->getMessage());
+    }
+}
+
+function record_meta_capi_status(string $status, string $message, string $orderNumber = '', string $eventId = '', array $response = []): void
+{
+    try {
+        save_setting('facebook_capi_last_status', substr($status, 0, 40));
+        save_setting('facebook_capi_last_message', substr($message, 0, 500));
+        save_setting('facebook_capi_last_order', substr($orderNumber, 0, 80));
+        save_setting('facebook_capi_last_event_id', substr($eventId, 0, 120));
+        save_setting('facebook_capi_last_checked_at', date('Y-m-d H:i:s'));
+
+        $responseJson = $response !== []
+            ? json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+            : '';
+        save_setting('facebook_capi_last_response', $responseJson !== false ? substr($responseJson, 0, 1000) : '');
+    } catch (Throwable) {
+        // CAPI diagnostics should never block order creation.
     }
 }
 
