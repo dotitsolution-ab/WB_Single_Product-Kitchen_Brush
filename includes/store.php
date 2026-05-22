@@ -260,8 +260,8 @@ function landing_defaults(): array
         'demo_image_url' => 'assets/images/kitchen-brush-plate-demo.jpg',
         'delivery_inside_charge' => '60',
         'delivery_outside_charge' => '120',
-        'feature_rows' => "৩৬০° রোটেটিং ব্রাশ হেড|সব কোণায় পরিষ্কার|assets/images/kitchen-brush-pan-close.jpg\nশক্ত ব্রাশ|দাগ তুলতে সাহায্য করে|assets/images/kitchen-brush-frypan-foam.jpg\nলম্বা হ্যান্ডেল|ব্যবহারে সহজ|assets/images/kitchen-brush-pan-cleaning.jpg\nওয়াল হ্যাঙ্গিং|স্টোরেজ সহজ|assets/images/kitchen-brush-hanging-storage.jpg",
-        'usage_rows' => "প্লেট|assets/images/kitchen-brush-plate-demo.jpg\nফ্রাইপ্যান|assets/images/kitchen-brush-frypan-foam.jpg\nহাঁড়ি|assets/images/kitchen-brush-pan-cleaning.jpg\nস্টোরেজ|assets/images/kitchen-brush-hanging-storage.jpg",
+        'feature_rows' => "৩৬০° রোটেটিং ব্রাশ হেড|সব কোণায় পরিষ্কার|assets/images/kitchen-brush-pan-close.jpg\nদাগ তোলা ব্রাশ|প্লেটের দাগ তুলতে সহায়ক|assets/images/kitchen-brush-plate-stain.jpg\nআরামদায়ক হ্যান্ডেল|হাতে ধরে ব্যবহার সহজ|assets/images/kitchen-brush-frypan-foam.jpg\nওয়াল হ্যাঙ্গিং|স্টোরেজ সহজ|assets/images/kitchen-brush-hanging-storage.jpg",
+        'usage_rows' => "প্লেট|assets/images/kitchen-brush-plate-stain.jpg\nফ্রাইপ্যান|assets/images/kitchen-brush-frypan-foam.jpg\nহাঁড়ি|assets/images/kitchen-brush-pan-close.jpg\nস্টোরেজ|assets/images/kitchen-brush-hanging-storage.jpg",
         'reason_rows' => "শ্রম ও সময় বাঁচায়\nদাগ দূর করে সহজে, স্ক্র্যাচ হয় না\nটেকসই রোটেশন, ঝামেলামুক্ত প্রয়োগ\nপচা গন্ধ কমায়, দাগ থাকে না",
     ];
 }
@@ -317,6 +317,28 @@ function landing_rows(string $key, array $columns): array
         }
         $rows[] = $row;
     }
+
+    return $key === 'feature_rows' ? normalize_feature_rows($rows) : $rows;
+}
+
+function normalize_feature_rows(array $rows): array
+{
+    foreach ($rows as &$row) {
+        $title = trim((string)($row['title'] ?? ''));
+
+        if ($title === 'শক্ত ব্রাশ') {
+            $row['title'] = 'দাগ তোলা ব্রাশ';
+            $row['text'] = 'প্লেটের দাগ তুলতে সহায়ক';
+            $row['image'] = 'assets/images/kitchen-brush-plate-stain.jpg';
+        }
+
+        if ($title === 'লম্বা হ্যান্ডেল') {
+            $row['title'] = 'আরামদায়ক হ্যান্ডেল';
+            $row['text'] = 'হাতে ধরে ব্যবহার সহজ';
+            $row['image'] = 'assets/images/kitchen-brush-frypan-foam.jpg';
+        }
+    }
+    unset($row);
 
     return $rows;
 }
@@ -410,7 +432,7 @@ function seed_kitchen_brush_content(): void
     $data['name'] = '৩৬০° রোটেটিং কিচেন ক্লিনিং ব্রাশ';
     $data['tagline'] = 'স্মার্ট ক্লিনিং, সহজ জীবন';
     $data['description'] = 'দাগ দূর হবে সহজে, ক্লিনিং হবে আরামে ও নিরাপদে।';
-    $data['highlights'] = "৩৬০° রোটেটিং ব্রাশ হেড\nশক্ত ব্রাশ দাগ তুলতে সহায়ক\nলম্বা হ্যান্ডেল ব্যবহারে সহজ\nওয়াল হ্যাঙ্গিং স্টোরেজ";
+    $data['highlights'] = "৩৬০° রোটেটিং ব্রাশ হেড\nদাগ তোলা ব্রাশ প্লেটের দাগ তুলতে সহায়ক\nআরামদায়ক হ্যান্ডেল হাতে ধরে ব্যবহার সহজ\nওয়াল হ্যাঙ্গিং স্টোরেজ";
     $data['price'] = '299';
     $data['compare_price'] = '399';
     $data['stock'] = (string)max(100, (int)$product['stock']);
