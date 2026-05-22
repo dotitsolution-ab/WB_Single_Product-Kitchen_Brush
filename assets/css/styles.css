@@ -2440,20 +2440,22 @@ select:focus {
 
 @media (max-width: 640px) {
     body.landing-body .sticky-order-cta {
-        left: 50% !important;
-        right: auto !important;
-        bottom: 10px !important;
-        width: calc(100vw - 48px) !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100% !important;
         min-width: 0 !important;
-        max-width: 320px !important;
+        max-width: none !important;
+        min-height: 58px !important;
         margin: 0 !important;
-        padding-right: 14px !important;
-        padding-left: 14px !important;
-        transform: translateX(-50%) !important;
+        padding-right: 18px !important;
+        padding-left: 18px !important;
+        border-radius: 0 !important;
+        transform: none !important;
     }
 
     body.landing-body .sticky-order-cta.is-hidden {
-        transform: translate(-50%, 12px) !important;
+        transform: translateY(12px) !important;
     }
 
     body.landing-body .sticky-order-cta span {
@@ -2466,7 +2468,7 @@ select:focus {
         height: 48px !important;
         right: auto !important;
         left: 14px !important;
-        bottom: 76px !important;
+        bottom: 72px !important;
         z-index: 70;
     }
 
