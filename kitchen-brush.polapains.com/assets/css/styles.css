@@ -2005,18 +2005,19 @@ select:focus {
 
 .sticky-order-cta {
     position: fixed;
-    left: 12px;
-    right: 12px;
+    left: 50%;
+    right: auto;
     bottom: 14px;
     z-index: 50;
-    width: auto;
+    width: calc(100vw - 24px);
     max-width: 460px;
-    margin-inline: auto;
     min-height: 56px;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     gap: 12px;
+    box-sizing: border-box;
+    padding: 0 18px;
     border-radius: 999px;
     color: #fff;
     background: linear-gradient(135deg, #ff9a05, #f05a00);
@@ -2025,7 +2026,7 @@ select:focus {
     font-weight: 900;
     line-height: 1;
     text-align: center;
-    transform: translateY(0);
+    transform: translateX(-50%);
     transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
 }
 
@@ -2033,7 +2034,7 @@ select:focus {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transform: translateY(12px);
+    transform: translate(-50%, 12px);
 }
 
 .sticky-order-cta strong {
@@ -2044,9 +2045,11 @@ select:focus {
 }
 
 .sticky-order-cta span {
+    display: block;
     min-width: 0;
     text-align: center;
-    white-space: nowrap;
+    white-space: normal;
+    line-height: 1.15;
 }
 
 @media print {
@@ -2266,12 +2269,12 @@ select:focus {
     }
 
     .sticky-order-cta {
-        left: 10px;
-        right: 10px;
         bottom: 10px;
+        width: calc(100vw - 20px);
+        max-width: none;
         min-height: 52px;
         gap: 8px;
-        padding: 0 12px;
+        padding: 0 16px;
         font-size: 19px;
     }
 
