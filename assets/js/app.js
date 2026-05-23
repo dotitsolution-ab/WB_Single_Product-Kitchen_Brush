@@ -134,11 +134,13 @@ document.querySelectorAll('[data-order-form]').forEach(function (form) {
 });
 
 if ('IntersectionObserver' in window) {
-    var stickyCta = document.querySelector('.sticky-order-cta');
+    var stickyCtas = document.querySelectorAll('.sticky-order-cta, .mobile-order-cta');
     var checkout = document.getElementById('checkout');
-    if (stickyCta && checkout) {
+    if (stickyCtas.length && checkout) {
         var observer = new IntersectionObserver(function (entries) {
-            stickyCta.classList.toggle('is-hidden', entries[0].isIntersecting);
+            stickyCtas.forEach(function (cta) {
+                cta.classList.toggle('is-hidden', entries[0].isIntersecting);
+            });
         }, {
             threshold: 0.18
         });

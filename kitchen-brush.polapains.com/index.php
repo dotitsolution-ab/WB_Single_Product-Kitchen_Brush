@@ -286,9 +286,12 @@ require BASE_PATH . '/includes/header.php';
                 </div>
             </aside>
         </section>
-        <a class="sticky-order-cta" href="#checkout">
+        <a class="sticky-order-cta sticky-order-cta-desktop" href="#checkout">
             <span><?= e(landing_value('cta_text')) ?></span>
             <strong><?= e(taka($product['price'])) ?></strong>
+        </a>
+        <a class="mobile-order-cta" href="#checkout" aria-label="<?= e(landing_value('cta_text')) ?>">
+            <span><?= e(landing_value('cta_text')) ?></span>
         </a>
     </section>
 <?php endif; ?>
