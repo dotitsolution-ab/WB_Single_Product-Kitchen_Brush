@@ -2450,8 +2450,10 @@ select:focus {
 
     body.landing-body .mobile-order-cta {
         position: fixed;
-        left: 14px;
-        right: 14px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100vw - 28px);
+        max-width: 480px;
         bottom: 10px;
         z-index: 65;
         min-height: 54px;
@@ -2475,7 +2477,7 @@ select:focus {
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
-        transform: translateY(12px);
+        transform: translate(-50%, 12px);
     }
 
     body.landing-body .mobile-order-cta span {
