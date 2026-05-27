@@ -2452,7 +2452,7 @@ select:focus {
         position: fixed;
         left: 50%;
         transform: translateX(-50%);
-        width: calc(100vw - 28px);
+        width: calc(100% - 28px);
         max-width: 480px;
         bottom: 10px;
         z-index: 65;
