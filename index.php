@@ -47,6 +47,13 @@ require BASE_PATH . '/includes/header.php';
     $features = landing_rows('feature_rows', ['title', 'text', 'image']);
     $usages = landing_rows('usage_rows', ['title', 'image']);
     $reasons = landing_rows('reason_rows', ['title']);
+    $freeBonuses = [
+        ['badge' => '01', 'title' => '২টি হুক হ্যাঙ্গার', 'text' => 'ব্রাশ ঝুলিয়ে শুকিয়ে রাখতে অর্ডারের সাথে ২টি হুক ফ্রি।'],
+        ['badge' => '02', 'title' => 'কিচেন ক্লিনিং টিপস', 'text' => 'রান্নাঘর দ্রুত পরিষ্কার রাখার সহজ টিপস গাইড।'],
+        ['badge' => '03', 'title' => '৫০টি শর্ট টিপস', 'text' => 'মোবাইলে দ্রুত পড়ার মতো ছোট ছোট ক্লিনিং টিপস।'],
+        ['badge' => '04', 'title' => 'স্মার্ট গ্রোসারি লিস্ট', 'text' => 'বাজারের জিনিস গুছিয়ে রাখার রেডি চেকলিস্ট।'],
+        ['badge' => '05', 'title' => 'ফ্রিজ স্টোরেজ গাইড', 'text' => 'কোন খাবার কোথায় রাখবেন, সহজ স্টোরেজ নির্দেশনা।'],
+    ];
     $heroTitle = landing_value('hero_title');
     $heroImage = image_src(landing_image_value('hero_image_url'), (string)$product['image_url']);
     $demoImage = image_src(landing_image_value('demo_image_url'), (string)$product['image_url']);
@@ -59,6 +66,7 @@ require BASE_PATH . '/includes/header.php';
                 <p><?= e(landing_value('hero_subtitle')) ?></p>
 
                 <div class="hero-benefits" aria-label="Product highlights">
+                    <span>ফ্রি বোনাস গাইড</span>
                     <span>ক্যাশ অন ডেলিভারি</span>
                     <span>দ্রুত ডেলিভারি</span>
                     <span>ঝুলিয়ে রাখা যায়</span>
@@ -194,6 +202,23 @@ require BASE_PATH . '/includes/header.php';
             </section>
         <?php endif; ?>
 
+        <section class="funnel-section bonus-section" aria-labelledby="bonus-title">
+            <div class="bonus-header">
+                <span class="section-kicker">ফ্রি বোনাস</span>
+                <h2 id="bonus-title">অর্ডারের সাথে যা যা ফ্রি পাচ্ছেন</h2>
+                <p>প্রতিটি অর্ডারের সাথে ২টি হুক হ্যাঙ্গার হাতে পাবেন, আর ডিজিটাল কিচেন গাইডগুলো ইমেইলে পাঠানো হবে।</p>
+            </div>
+            <div class="bonus-grid">
+                <?php foreach ($freeBonuses as $bonus): ?>
+                    <article class="bonus-card">
+                        <span class="bonus-index"><?= e($bonus['badge']) ?></span>
+                        <strong><?= e($bonus['title']) ?></strong>
+                        <p><?= e($bonus['text']) ?></p>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+        </section>
+
         <section class="funnel-section steps-section">
             <h2>অর্ডার করা খুব সহজ</h2>
             <div class="order-steps">
@@ -261,8 +286,9 @@ require BASE_PATH . '/includes/header.php';
                         </span>
                     </label>
                     <label>
-                        <input type="email" name="email" value="<?= e(old('email')) ?>" autocomplete="email" maxlength="190" placeholder="ইমেইল (অপশনাল)">
+                        <input type="email" name="email" value="<?= e(old('email')) ?>" autocomplete="email" required maxlength="190" placeholder="ইমেইল (ফ্রি টিপস পেতে আবশ্যক)">
                     </label>
+                    <p class="email-bonus-note">আপনার ফ্রি কিচেন টিপস, ৫০টি শর্ট টিপস, স্মার্ট গ্রোসারি লিস্ট ও ফ্রিজ স্টোরেজ গাইড ইমেইলে পাঠানো হবে। তাই ইমেইল দেওয়া আবশ্যক।</p>
                     <label>
                         <textarea name="address" rows="3" required maxlength="500" placeholder="সম্পূর্ণ ঠিকানা"><?= e(old('address')) ?></textarea>
                     </label>
@@ -283,6 +309,8 @@ require BASE_PATH . '/includes/header.php';
                     <span>✓ ক্যাশ অন ডেলিভারি</span>
                     <span>✓ ফোনে অর্ডার কনফার্ম</span>
                     <span>✓ নিরাপদ প্যাকেজিং</span>
+                    <span>✓ ফ্রি ২টি হুক হ্যাঙ্গার</span>
+                    <span>✓ ফ্রি কিচেন গাইড ইমেইলে</span>
                 </div>
             </aside>
         </section>

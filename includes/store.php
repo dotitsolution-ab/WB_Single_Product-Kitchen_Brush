@@ -481,8 +481,8 @@ function create_cod_order(array $data): array
     if (!valid_bd_phone($phone)) {
         throw new InvalidArgumentException('Please enter a valid Bangladesh phone number.');
     }
-    if ($email !== '' && (!filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > 190)) {
-        throw new InvalidArgumentException('Please enter a valid email address.');
+    if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > 190) {
+        throw new InvalidArgumentException('Please enter a valid email address to receive the free kitchen tips.');
     }
     if ($address === '' || strlen($address) > 500) {
         throw new InvalidArgumentException('Please enter a valid delivery address.');
