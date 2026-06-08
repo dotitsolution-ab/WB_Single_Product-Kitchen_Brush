@@ -17,6 +17,12 @@ if ($setupError === null) {
     track_page_visit('home');
 }
 
+if (!headers_sent()) {
+    header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+    header('Pragma: no-cache');
+    header('Expires: 0');
+}
+
 $pageTitle = '360 Kitchen Brush';
 $bodyClass = 'landing-body';
 $hideHeader = true;
@@ -48,7 +54,7 @@ require BASE_PATH . '/includes/header.php';
     $usages = landing_rows('usage_rows', ['title', 'image']);
     $reasons = landing_rows('reason_rows', ['title']);
     $freeBonuses = [
-        ['badge' => '01', 'title' => '২টি হুক হ্যাঙ্গার', 'text' => 'ব্রাশ ঝুলিয়ে শুকিয়ে রাখতে অর্ডারের সাথে ২টি হুক ফ্রি।'],
+        ['badge' => '01', 'title' => '১টি হুক হ্যাঙ্গার', 'text' => 'ব্রাশ ঝুলিয়ে শুকিয়ে রাখতে অর্ডারের সাথে ১টি হুক ফ্রি।'],
         ['badge' => '02', 'title' => 'কিচেন ক্লিনিং টিপস', 'text' => 'রান্নাঘর দ্রুত পরিষ্কার রাখার সহজ টিপস গাইড।'],
         ['badge' => '03', 'title' => '৫০টি শর্ট টিপস', 'text' => 'মোবাইলে দ্রুত পড়ার মতো ছোট ছোট ক্লিনিং টিপস।'],
         ['badge' => '04', 'title' => 'স্মার্ট গ্রোসারি লিস্ট', 'text' => 'বাজারের জিনিস গুছিয়ে রাখার রেডি চেকলিস্ট।'],
@@ -57,6 +63,8 @@ require BASE_PATH . '/includes/header.php';
     $heroTitle = '360 Kitchen Brush';
     $heroImage = image_src(landing_image_value('hero_image_url'), (string)$product['image_url']);
     $demoImage = image_src(landing_image_value('demo_image_url'), (string)$product['image_url']);
+    $hookOfferImage = image_src('assets/images/adhesive-hook-free-offer.jpg');
+    $hookWallImage = image_src('assets/images/adhesive-hook-wall-demo.jpg');
     ?>
     <section class="funnel">
         <div class="funnel-hero">
@@ -65,8 +73,14 @@ require BASE_PATH . '/includes/header.php';
                 <h1><?= e($heroTitle) ?></h1>
                 <p><?= e(landing_value('hero_subtitle')) ?></p>
 
+                <div class="hero-offer-highlight" aria-label="Free offer highlight">
+                    <span>Free Offer</span>
+                    <strong>১টি স্ট্রং Adhesive Hanger Hook একদম ফ্রি</strong>
+                    <small>ব্রাশ ঝুলিয়ে শুকিয়ে রাখুন, রান্নাঘর থাকুক গুছানো।</small>
+                </div>
+
                 <div class="hero-benefits" aria-label="Product highlights">
-                    <span>ফ্রি বোনাস গাইড</span>
+                    <span class="hero-benefit-free">Free Offer: ১টি হুক ফ্রি</span>
                     <span>ক্যাশ অন ডেলিভারি</span>
                     <span>দ্রুত ডেলিভারি</span>
                     <span>ঝুলিয়ে রাখা যায়</span>
@@ -86,6 +100,7 @@ require BASE_PATH . '/includes/header.php';
                         <span class="offer-price-number"><?= e(number_format((float)$product['price'], 0)) ?></span>
                         <span class="offer-price-currency">টাকা</span>
                     </strong>
+                    <p class="offer-free-line"><span>Free Offer</span> অর্ডারের সাথে ১টি Adhesive Hanger Hook ফ্রি</p>
                 </div>
 
                 <a class="funnel-cta" href="#checkout"><?= e(landing_value('cta_text')) ?></a>
@@ -104,6 +119,13 @@ require BASE_PATH . '/includes/header.php';
 
             <div class="hero-product">
                 <img class="hero-main-img" src="<?= e($heroImage) ?>" alt="<?= e($product['name']) ?>" loading="eager" width="760" height="760">
+                <?php if ($hookOfferImage !== ''): ?>
+                    <div class="hero-hook-card">
+                        <span>Free Offer</span>
+                        <img src="<?= e($hookOfferImage) ?>" alt="Free adhesive hanger hook" loading="eager" width="190" height="190">
+                        <strong>১টি হুক ফ্রি</strong>
+                    </div>
+                <?php endif; ?>
                 <?php if ($demoImage !== '' && $demoImage !== $heroImage): ?>
                     <div class="hero-demo-card">
                         <img src="<?= e($demoImage) ?>" alt="Kitchen brush cleaning demo" loading="eager" width="220" height="160">
@@ -206,12 +228,37 @@ require BASE_PATH . '/includes/header.php';
             <div class="bonus-header">
                 <span class="section-kicker">ফ্রি বোনাস</span>
                 <h2 id="bonus-title">অর্ডারের সাথে যা যা ফ্রি পাচ্ছেন</h2>
-                <p>প্রতিটি অর্ডারের সাথে ২টি হুক হ্যাঙ্গার হাতে পাবেন, আর ডিজিটাল কিচেন গাইডগুলো ইমেইলে পাঠানো হবে।</p>
+                <p>প্রতিটি অর্ডারের সাথে ১টি হুক হ্যাঙ্গার হাতে পাবেন, আর ডিজিটাল কিচেন গাইডগুলো ইমেইলে পাঠানো হবে।</p>
             </div>
+            <?php if ($hookOfferImage !== '' || $hookWallImage !== ''): ?>
+                <div class="bonus-offer-showcase">
+                    <div class="bonus-offer-copy">
+                        <span class="bonus-term">Free Offer</span>
+                        <h3>১টি স্ট্রং Adhesive Hanger Hook ফ্রি</h3>
+                        <p>কিচেন ব্রাশ, ছোট টুল বা কাপড় ঝুলিয়ে রাখতে অর্ডারের সাথে এই clear adhesive hook পাবেন। আলাদা ড্রিলিংয়ের ঝামেলা নেই, তাই রান্নাঘর গুছিয়ে রাখা সহজ।</p>
+                        <div class="bonus-offer-points">
+                            <span>স্টিল হুক</span>
+                            <span>ক্লিয়ার প্যাড</span>
+                            <span>ওয়াল স্টোরেজ</span>
+                        </div>
+                    </div>
+                    <div class="bonus-offer-images" aria-label="Free hook images">
+                        <?php if ($hookOfferImage !== ''): ?>
+                            <img class="bonus-hook-image-main" src="<?= e($hookOfferImage) ?>" alt="Free adhesive hook close view" loading="lazy" width="320" height="320">
+                        <?php endif; ?>
+                        <?php if ($hookWallImage !== ''): ?>
+                            <img class="bonus-hook-image-secondary" src="<?= e($hookWallImage) ?>" alt="Adhesive hook on wall" loading="lazy" width="220" height="220">
+                        <?php endif; ?>
+                    </div>
+                </div>
+            <?php endif; ?>
             <div class="bonus-grid">
                 <?php foreach ($freeBonuses as $bonus): ?>
-                    <article class="bonus-card">
+                    <article class="bonus-card<?= $bonus['badge'] === '01' ? ' bonus-card-featured' : '' ?>">
                         <span class="bonus-index"><?= e($bonus['badge']) ?></span>
+                        <?php if ($bonus['badge'] === '01'): ?>
+                            <span class="bonus-term">Free Offer</span>
+                        <?php endif; ?>
                         <strong><?= e($bonus['title']) ?></strong>
                         <p><?= e($bonus['text']) ?></p>
                     </article>
@@ -286,9 +333,9 @@ require BASE_PATH . '/includes/header.php';
                         </span>
                     </label>
                     <label>
-                        <input type="email" name="email" value="<?= e(old('email')) ?>" autocomplete="email" required maxlength="190" placeholder="ইমেইল (ফ্রি টিপস পেতে আবশ্যক)">
+                        <input type="email" name="email" value="<?= e(old('email')) ?>" autocomplete="email" maxlength="190" placeholder="ইমেইল (অপশনাল)">
                     </label>
-                    <p class="email-bonus-note">আপনার ফ্রি কিচেন টিপস, ৫০টি শর্ট টিপস, স্মার্ট গ্রোসারি লিস্ট ও ফ্রিজ স্টোরেজ গাইড ইমেইলে পাঠানো হবে। তাই ইমেইল দেওয়া আবশ্যক।</p>
+                    <p class="email-bonus-note">ইমেইল দিলে আপনার ফ্রি কিচেন টিপস, ৫০টি শর্ট টিপস, স্মার্ট গ্রোসারি লিস্ট ও ফ্রিজ স্টোরেজ গাইড ইমেইলে পাঠানো হবে।</p>
                     <label>
                         <textarea name="address" rows="3" required maxlength="500" placeholder="সম্পূর্ণ ঠিকানা"><?= e(old('address')) ?></textarea>
                     </label>
@@ -309,7 +356,7 @@ require BASE_PATH . '/includes/header.php';
                     <span>✓ ক্যাশ অন ডেলিভারি</span>
                     <span>✓ ফোনে অর্ডার কনফার্ম</span>
                     <span>✓ নিরাপদ প্যাকেজিং</span>
-                    <span>✓ ফ্রি ২টি হুক হ্যাঙ্গার</span>
+                    <span class="summary-free-offer">✓ Free Offer: ১টি Adhesive Hook ফ্রি</span>
                     <span>✓ ফ্রি কিচেন গাইড ইমেইলে</span>
                 </div>
             </aside>
