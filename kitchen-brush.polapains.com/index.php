@@ -17,7 +17,7 @@ if ($setupError === null) {
     track_page_visit('home');
 }
 
-$pageTitle = setting('site_name', app_config('app.name', 'Single Product Store'));
+$pageTitle = '360 Kitchen Brush';
 $bodyClass = 'landing-body';
 $hideHeader = true;
 $hideFooter = true;
@@ -54,7 +54,7 @@ require BASE_PATH . '/includes/header.php';
         ['badge' => '04', 'title' => 'স্মার্ট গ্রোসারি লিস্ট', 'text' => 'বাজারের জিনিস গুছিয়ে রাখার রেডি চেকলিস্ট।'],
         ['badge' => '05', 'title' => 'ফ্রিজ স্টোরেজ গাইড', 'text' => 'কোন খাবার কোথায় রাখবেন, সহজ স্টোরেজ নির্দেশনা।'],
     ];
-    $heroTitle = landing_value('hero_title');
+    $heroTitle = '360 Kitchen Brush';
     $heroImage = image_src(landing_image_value('hero_image_url'), (string)$product['image_url']);
     $demoImage = image_src(landing_image_value('demo_image_url'), (string)$product['image_url']);
     ?>
