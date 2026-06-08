@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">Kitchen Brush Admin</string>
     <string name="admin_url">https://kitchenbrush.hellowb.com/admin/mobile.php</string>
+    <string name="admin_fallback_url">https://kitchenbrush.hellowb.com/admin/login.php</string>
 </resources>

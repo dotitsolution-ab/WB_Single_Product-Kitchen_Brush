@@ -25,6 +25,7 @@ import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -41,6 +42,7 @@ public class MainActivity extends Activity {
     private WebView webView;
     private ProgressBar progressBar;
     private TextView offlineView;
+    private boolean fallbackLoaded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,6 +147,7 @@ public class MainActivity extends Activity {
         }
 
         offlineView.setVisibility(View.GONE);
+        fallbackLoaded = false;
         webView.loadUrl(targetUrl);
     }
 
@@ -155,6 +158,7 @@ public class MainActivity extends Activity {
         }
 
         offlineView.setVisibility(View.GONE);
+        fallbackLoaded = false;
         webView.loadUrl(getString(R.string.admin_url));
     }
 
@@ -266,6 +270,31 @@ public class MainActivity extends Activity {
         }
     }
 
+    private boolean shouldFallbackToLogin(String url, int statusCode) {
+        if (fallbackLoaded || statusCode < 400 || url == null) {
+            return false;
+        }
+
+        Uri uri = Uri.parse(url);
+        String host = uri.getHost();
+        String path = uri.getPath();
+
+        return ADMIN_HOST.equalsIgnoreCase(host)
+            && path != null
+            && path.startsWith("/admin/mobile.php");
+    }
+
+    private void loadLoginFallback(WebView view) {
+        fallbackLoaded = true;
+        view.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MainActivity.this, "Admin app page is not deployed yet. Opening login.", Toast.LENGTH_LONG).show();
+                webView.loadUrl(getString(R.string.admin_fallback_url));
+            }
+        });
+    }
+
     @Override
     public void onBackPressed() {
         if (webView != null && webView.canGoBack()) {
@@ -304,6 +333,14 @@ public class MainActivity extends Activity {
             super.onPageFinished(view, url);
             progressBar.setVisibility(View.GONE);
             offlineView.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+            super.onReceivedHttpError(view, request, errorResponse);
+            if (request.isForMainFrame() && shouldFallbackToLogin(request.getUrl().toString(), errorResponse.getStatusCode())) {
+                loadLoginFallback(view);
+            }
         }
     }
 
