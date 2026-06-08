@@ -8,6 +8,7 @@ $currentAdminPage = basename((string)parse_url((string)($_SERVER['SCRIPT_NAME'] 
 $adminNavItems = [
     ['label' => 'Dashboard', 'href' => 'admin/index.php', 'active' => ['index.php']],
     ['label' => 'Orders', 'href' => 'admin/orders.php', 'active' => ['orders.php', 'order.php', 'invoice.php']],
+    ['label' => 'Mobile App', 'href' => 'admin/mobile.php', 'active' => ['mobile.php']],
     ['label' => 'Product', 'href' => 'admin/product.php', 'active' => ['product.php']],
     ['label' => 'Media', 'href' => 'admin/media.php', 'active' => ['media.php']],
     ['label' => 'Notifications', 'href' => 'admin/email.php', 'active' => ['email.php']],

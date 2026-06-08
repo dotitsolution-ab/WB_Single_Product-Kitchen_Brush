@@ -4,20 +4,33 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../bootstrap.php';
 
+if (!headers_sent()) {
+    header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+}
+
 if (Auth::check()) {
     redirect('admin/index.php');
 }
 
 $error = null;
 if (is_post()) {
-    verify_csrf();
-    try {
-        if (Auth::attempt((string)($_POST['email'] ?? ''), (string)($_POST['password'] ?? ''))) {
-            redirect('admin/index.php');
+    $token = (string)($_POST['_csrf'] ?? '');
+    $csrfValid = $token !== ''
+        && !empty($_SESSION['_csrf'])
+        && hash_equals((string)$_SESSION['_csrf'], $token);
+
+    if (!$csrfValid) {
+        unset($_SESSION['_csrf']);
+        $error = 'Session expired. Please try logging in again.';
+    } else {
+        try {
+            if (Auth::attempt((string)($_POST['email'] ?? ''), (string)($_POST['password'] ?? ''))) {
+                redirect('admin/index.php');
+            }
+            $error = 'Invalid admin email or password.';
+        } catch (Throwable $exception) {
+            $error = $exception->getMessage();
         }
-        $error = 'Invalid admin email or password.';
-    } catch (Throwable $exception) {
-        $error = $exception->getMessage();
     }
 }
 ?>

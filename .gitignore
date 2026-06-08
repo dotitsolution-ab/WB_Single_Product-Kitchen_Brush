@@ -3,3 +3,8 @@ storage/logs/*.log
 assets/images/uploads/
 .DS_Store
 Thumbs.db
+android-admin-app/build*/
+android-admin-app/admin-debug.keystore
+outputs/bcrypt-tool/
+outputs/npm-cache/
+outputs/apk/*.idsig

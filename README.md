@@ -23,6 +23,7 @@ For Dokploy production steps, follow `DOKPLOY.md`.
 
 - Manage product price, stock, images, and delivery charge.
 - View/filter orders and update statuses.
+- Use `/admin/mobile.php` as an installable mobile admin app with order notifications and quick processing.
 - Print invoices from each order detail page.
 - Add GTM, GA4, Facebook Pixel, Meta Conversions API, verification meta tags, and Steadfast credentials in settings.
 - Create a Steadfast shipment from an order detail page.

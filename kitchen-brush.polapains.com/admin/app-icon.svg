@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Admin app icon">
+    <rect width="512" height="512" rx="112" fill="#0f766e"/>
+    <rect x="86" y="110" width="340" height="292" rx="42" fill="#ffffff"/>
+    <path d="M154 184h202M154 256h202M154 328h118" fill="none" stroke="#0f766e" stroke-width="28" stroke-linecap="round"/>
+    <circle cx="366" cy="328" r="42" fill="#f59e0b"/>
+    <path d="M350 328l14 14 28-34" fill="none" stroke="#ffffff" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
